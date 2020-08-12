@@ -20,7 +20,13 @@
                 <canvas id="meme-canvas" height="500" width="500" onclick="onSelectImge()" >
             </div>
             <div class="menu-container">
-                <input type="text" class="line" placeholder="Insert meme text" oninput="onUpdateLine(this.value,200,200)">
+                <input type="menu-btn text" class="line" placeholder="Insert meme text" oninput="onUpdateLineText(this.value,200,200)">
+                <button class="menu-btn larger-txt" value="larger">larger</button>
+                <button class="menu-btn small-txt" value = "smaller">smaller</button>
+                <button class="menu-btn left" value="left">left</button>
+                <button class="menu-btn center" value="center">center</button>
+                <button class="menu-btn right" value="right">right</button>
+                
             </div>
         </section>
 

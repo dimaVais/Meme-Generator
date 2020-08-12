@@ -29,6 +29,11 @@
     height: 30px;
 }
 
+.menu-btn{
+    /* max-width: 40px;
+    height: 40px; */
+}
+
 .gallery {
     background-color: tomato;
     margin: 0 auto;
@@ -52,6 +57,8 @@
     max-width: 150px;
     height: 150px;
 }
+
+
 
 /* HELPERS */
 
