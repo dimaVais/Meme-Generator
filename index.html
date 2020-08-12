@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MEMEGEN</title>
+    <link href="css/fonts/fontawesome-free-5.14.0-web/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -17,28 +18,33 @@
     <main>
         <section class="meme-container flex-row space-between">
             <div class="canvas-container">
-                <canvas id="meme-canvas" height="500" width="500" onclick="onSelectImge()" >
+                <canvas id="meme-canvas" dir="ltr" height="551" width="541" onclick="onSelectImge()" >
             </div>
             <div class="menu-container">
-                <input type="menu-btn text" class="line" placeholder="Insert meme text" oninput="onUpdateLineText(this.value,200,200)">
-                <button class="menu-btn larger-txt" value="larger">larger</button>
-                <button class="menu-btn small-txt" value = "smaller">smaller</button>
-                <button class="menu-btn left" value="left">left</button>
-                <button class="menu-btn center" value="center">center</button>
-                <button class="menu-btn right" value="right">right</button>
-                
+                <input type="menu-btn text" class="line" placeholder="Insert meme text" oninput="onUpdateLineText(this.value)">
+
+                <button class="menu-btn move"><i class="fas fa-arrows-alt-v"></i></button>
+                <button class="menu-btn add"><i class="fas fa-plus-square"></i></button>
+                <button class="menu-btn remove"><i class="fas fa-trash-alt"></i></button>
+              
+                <button class="menu-btn larger-txt" value="larger" onclick="onUpdateLineSize(1)"><i class="fas fa-search-plus"></i></button>
+                <button class="menu-btn small-txt" value = "smaller" onclick="onUpdateLineSize(-1)"><i class="fas fa-search-minus"></i></button>
+                <button class="menu-btn left" value="right" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-left"></i></button>
+                <button class="menu-btn center" value="center" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-center"></i></button>
+                <button class="menu-btn right" value="left" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-right"></i></button>
+                <input  class="menu-btn txt-color" type="color" name="color" onchange="onUpdateLineColor(this.value)" >
             </div>
         </section>
 
-        <section class="gallery">
-            <div class="gallery-container"></div>
-        </section>
+      
     </main>
 
     <footer>
 
     </footer>
-
+    <section class="gallery">
+        <div class="gallery-container"></div>
+    </section>
     <script src='js/utils.js'></script>
     <script src='js/storage-service.js'></script>
     <script src='js/memegen-service.js'></script>

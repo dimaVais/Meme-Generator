@@ -1,7 +1,7 @@
 'use strict';
 
 // var gIds = gImgs.length;
-const DEF_LINE_SIZE = '60px';
+const DEF_LINE_SIZE = 60;
 const DEF_LINE_ALIGN = 'center';
 const DEF_LINE_COLOR = 'white';
 
@@ -33,10 +33,11 @@ var gMeme = {
     selectedLineIdx: 0,
     lines: [
         {
+            pos: { x: 250, y: 50 },
             txt: 'I never eat Falafel',
-            size: 20,
-            align: 'left',
-            color: 'red'
+            size: DEF_LINE_SIZE + 'px',
+            align: DEF_LINE_ALIGN,
+            color: DEF_LINE_COLOR
         }
     ]
 }
@@ -47,23 +48,40 @@ function setSelectrdImg(imgId) {
     gMeme.selectedImgId = imgToSet.id;
 }
 
-function addLine(txt, size, align, color) {
+function addLine(txt, size, align, color, x, y) {
     let line =
     {
+        pos: { x: x, y: y },
         txt: txt,
-        size: size,
+        size: size + 'px',
         align: align,
         color: color
     }
     gMeme.lines.push(line);
 }
 
-function updateLine (txt, size=DEF_LINE_SIZE, align=DEF_LINE_ALIGN, color=DEF_LINE_COLOR) {
-   let updateLine =  gMeme.lines[gMeme.selectedLineIdx];
-   updateLine.txt=txt;
-   updateLine.size=size;
-   updateLine.align=align;
-   updateLine.color=color;
+function updateLine(data, type) {
+    let updateLine = gMeme.lines[gMeme.selectedLineIdx];
+    switch (type) {
+        case TXT_TYPE:
+            updateLine.txt = data;
+            break;
+        case SIZE_TYPE:
+            console.log(updateLine.size);
+            let newSize = parseInt(updateLine.size.substring(0,updateLine.size.length-2)) + data;
+            console.log(newSize);
+            updateLine.size = newSize+'px';
+            break;
+        case ALIGN_TYPE:
+            updateLine.align = data;
+            break;
+        case COLOR_TYPE:
+            updateLine.color = data;
+            break;
+        case POS_TYPE:
+            updateLine.pos = data;
+            break;
+    }
 }
 
 function getSelectedImg() {
@@ -78,6 +96,6 @@ function getMeme() {
     return gMeme
 }
 
-function getGallery(){
+function getGallery() {
     return gImgs;
 }

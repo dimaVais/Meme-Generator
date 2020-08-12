@@ -1,4 +1,10 @@
 'use strict';
+const TXT_TYPE = 'TEXT';
+const SIZE_TYPE = 'SIZE';
+const ALIGN_TYPE = 'ALIGN'
+const COLOR_TYPE = 'COLOR';
+const POS_TYPE = 'POS';
+const SIZE_CHANGE_FACTOR = 5;
 
 var gCanvas;
 var gCtx;
@@ -31,31 +37,55 @@ function drawSelectedImage() {
     }
 }
 
-function onUpdateLineText(text, x, y) {
+function onUpdateLineText(text) {
     drawSelectedImage();
-    updateLine(text);
-    drawText(x, y);
+    updateLine(text, TXT_TYPE);
+    drawText();
+}
+
+function onUpdateLineSize(sizeChange) {
+    drawSelectedImage();
+    console.log(SIZE_CHANGE_FACTOR*sizeChange);
+    updateLine(SIZE_CHANGE_FACTOR*sizeChange, SIZE_TYPE);
+    drawText();
+}
+
+function onUpdateLineAlign(align) {
+    drawSelectedImage();
+    updateLine(align, ALIGN_TYPE);
+    drawText();
+}
+
+function onUpdateLineColor(color) {
+    drawSelectedImage();
+    updateLine(color, COLOR_TYPE);
+    drawText();
+}
+function onUpdateLinePos(pos) {
+    drawSelectedImage();
+    updateLine(pos, POS_TYPE);
+    drawText();
 }
 
 
-function drawText(x, y) {
-    let line = getLineByIdx();
+function drawText() {
+    let line = getLineByIdx(0);
     gCtx.lineWidth = '2';
     gCtx.strokeStyle = 'black';
     gCtx.fillStyle = line.color;
     gCtx.font = line.size + ' impact';
     gCtx.textAlign = line.align;
-    gCtx.fillText(line.txt, x, y);
-    gCtx.strokeText(line.txt, x, y);
+    gCtx.fillText(line.txt, line.pos.x, line.pos.y);
+    gCtx.strokeText(line.txt, line.pos.x, line.pos.y);
 }
 
 function clearCanvas() {
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
 }
 
-function renderGallery(){
+function renderGallery() {
     const gallery = getGallery();
-    var htmlImgs= gallery.map(item =>{
+    var htmlImgs = gallery.map(item => {
         return `<img class="gallery-img" src="${item.url}" onclick="onSelectImge(${item.id})">`;
     });
     console.log(htmlImgs);
