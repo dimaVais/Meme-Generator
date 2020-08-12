@@ -1,6 +1,10 @@
 'use strict';
 
 // var gIds = gImgs.length;
+const DEF_LINE_SIZE = '60px';
+const DEF_LINE_ALIGN = 'center';
+const DEF_LINE_COLOR = 'white';
+
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 
 var gImgs = [
@@ -54,8 +58,8 @@ function addLine(txt, size, align, color) {
     gMeme.lines.push(line);
 }
 
-function updateLine (idx=0,txt, size, align, color) {
-   let updateLine =  gMeme.lines[idx];
+function updateLine (txt, size=DEF_LINE_SIZE, align=DEF_LINE_ALIGN, color=DEF_LINE_COLOR) {
+   let updateLine =  gMeme.lines[gMeme.selectedLineIdx];
    updateLine.txt=txt;
    updateLine.size=size;
    updateLine.align=align;

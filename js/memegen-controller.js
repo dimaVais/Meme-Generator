@@ -31,9 +31,9 @@ function drawSelectedImage() {
     }
 }
 
-function onUpdateLine(text, x, y) {
+function onUpdateLineText(text, x, y) {
     drawSelectedImage();
-    updateLine(0, text, '60px', 'center', 'white');;
+    updateLine(text);
     drawText(x, y);
 }
 
