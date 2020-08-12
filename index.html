@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MEMEGEN</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body onload="init()">
+
+    <header>
+
+    </header>
+    <main>
+        <section class="meme-container flex-row space-between">
+            <div class="canvas-container">
+                <canvas id="meme-canvas" height="500" width="500" onclick="onSelectImge()" >
+            </div>
+            <div class="menu-container">
+                <input type="text" class="line" placeholder="Insert meme text" oninput="onUpdateLine(this.value,200,200)">
+            </div>
+        </section>
+
+        <section class="gallery">
+            <div class="gallery-container"></div>
+        </section>
+    </main>
+
+    <footer>
+
+    </footer>
+
+    <script src='js/utils.js'></script>
+    <script src='js/storage-service.js'></script>
+    <script src='js/memegen-service.js'></script>
+    <script src='js/memegen-controller.js'></script>
+</body>
+
+</html>
