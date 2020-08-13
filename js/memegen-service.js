@@ -4,6 +4,7 @@
 const DEF_LINE_SIZE = 60;
 const DEF_LINE_ALIGN = 'center';
 const DEF_LINE_COLOR = 'white';
+const CANVSA_WIDTH = 541;
 
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 
@@ -33,8 +34,8 @@ var gMeme = {
     selectedLineIdx: 0,
     lines: [
         {
-            pos: { x: 250, y: 50 },
-            txt: 'I never eat Falafel',
+            pos: { x: CANVSA_WIDTH / 2, y: 50 },
+            txt: 'Insert Text Here',
             size: DEF_LINE_SIZE + 'px',
             align: DEF_LINE_ALIGN,
             color: DEF_LINE_COLOR
@@ -68,9 +69,9 @@ function updateLine(data, type) {
             break;
         case SIZE_TYPE:
             console.log(updateLine.size);
-            let newSize = parseInt(updateLine.size.substring(0,updateLine.size.length-2)) + data;
+            let newSize = parseInt(updateLine.size.substring(0, updateLine.size.length - 2)) + data;
             console.log(newSize);
-            updateLine.size = newSize+'px';
+            updateLine.size = newSize + 'px';
             break;
         case ALIGN_TYPE:
             updateLine.align = data;
@@ -79,7 +80,8 @@ function updateLine(data, type) {
             updateLine.color = data;
             break;
         case POS_TYPE:
-            updateLine.pos = data;
+            let lineTxtSize = parseInt(updateLine.size.substring(0, updateLine.size.length - 2));
+            updateLine.pos.y = updateLine.pos.y + lineTxtSize * data;
             break;
     }
 }

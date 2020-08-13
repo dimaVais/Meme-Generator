@@ -23,9 +23,12 @@
             <div class="menu-container">
                 <input type="menu-btn text" class="line" placeholder="Insert meme text" oninput="onUpdateLineText(this.value)">
 
-                <button class="menu-btn move"><i class="fas fa-arrows-alt-v"></i></button>
+                <button class="menu-btn move-between"><i class="fas fa-arrows-alt-v"></i></button>
                 <button class="menu-btn add"><i class="fas fa-plus-square"></i></button>
                 <button class="menu-btn remove"><i class="fas fa-trash-alt"></i></button>
+
+                <button class="menu-btn line-up" onclick="onUpdateLinePos(-1)"><i class="fas fa-arrow-circle-up"></i></button>
+                <button class="menu-btn line-down" onclick="onUpdateLinePos(1)"><i class="fas fa-arrow-circle-down"></i></button>
               
                 <button class="menu-btn larger-txt" value="larger" onclick="onUpdateLineSize(1)"><i class="fas fa-search-plus"></i></button>
                 <button class="menu-btn small-txt" value = "smaller" onclick="onUpdateLineSize(-1)"><i class="fas fa-search-minus"></i></button>

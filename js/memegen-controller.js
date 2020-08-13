@@ -15,6 +15,7 @@ function init() {
     gCanvas = document.getElementById('meme-canvas');
     gCtx = gCanvas.getContext('2d');
     renderGallery();
+    checkIfOutOfCanvas();
 }
 
 function onSelectImge(imgId = 2) {
@@ -45,8 +46,8 @@ function onUpdateLineText(text) {
 
 function onUpdateLineSize(sizeChange) {
     drawSelectedImage();
-    console.log(SIZE_CHANGE_FACTOR*sizeChange);
-    updateLine(SIZE_CHANGE_FACTOR*sizeChange, SIZE_TYPE);
+    console.log(SIZE_CHANGE_FACTOR * sizeChange);
+    updateLine(SIZE_CHANGE_FACTOR * sizeChange, SIZE_TYPE);
     drawText();
 }
 
@@ -61,10 +62,20 @@ function onUpdateLineColor(color) {
     updateLine(color, COLOR_TYPE);
     drawText();
 }
-function onUpdateLinePos(pos) {
+function onUpdateLinePos(posChange) {
     drawSelectedImage();
-    updateLine(pos, POS_TYPE);
+    if (checkIfOutOfCanvasHieght(posChange)) {
+        updateLine(posChange, POS_TYPE);
+    }
     drawText();
+}
+
+function checkIfOutOfCanvasHieght(posChange) {
+    let meme = getMeme();
+    let currLine = meme.lines[meme.selectedLineIdx];
+    let lineTxtSize = parseInt(currLine.size.substring(0, currLine.size.length - 2));
+    if (currLine.pos.y + lineTxtSize * posChange < 0 + lineTxtSize || currLine.pos.y + lineTxtSize * posChange > gCanvas.height) return false;
+    else return true;
 }
 
 
