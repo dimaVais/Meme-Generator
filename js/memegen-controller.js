@@ -3,6 +3,7 @@ const TXT_TYPE = 'TEXT';
 const SIZE_TYPE = 'SIZE';
 const ALIGN_TYPE = 'ALIGN'
 const COLOR_TYPE = 'COLOR';
+const COLOR_FRAME_TYPE = 'COLOR_FRAME';
 const POS_TYPE = 'POS';
 const SIZE_CHANGE_FACTOR = 5;
 
@@ -17,10 +18,23 @@ function init() {
     renderGallery();
 }
 
+function toggleEditor(){
+    
+    const memeEditor =  document.querySelector('.meme-container');
+    const gallery =  document.querySelector('.gallery');
+    // if(!gallery.classList.contains ('hidden') && memeEditor.classList.contains ('hidden') ) return
+    memeEditor.classList.toggle('flex-row')
+    memeEditor.classList.toggle('space-between');
+    memeEditor.classList.toggle('hidden');
+    gallery.classList.toggle('hidden');
+}
+ 
+
 function onSelectImge(imgId = 2) {
     setSelectrdImg(imgId);
     gIsImg = false;
     drawSelectedImage();
+    toggleEditor();
 }
 
 function drawSelectedImage() {
@@ -58,6 +72,7 @@ function onSelectLine() {
 }
 
 function onUpdateLineText(text) {
+    if(!getMeme().isSelectedLine) return;
     drawSelectedImage();
     if (getLineTextWidth() + geTextWidth(text) > gCanvas.width) {
         let currLine = getSelectedLine();
@@ -68,6 +83,7 @@ function onUpdateLineText(text) {
 }
 
 function onUpdateLineSize(sizeChange) {
+    if(!getMeme().isSelectedLine) return;
     drawSelectedImage();
     if (isFontOutOfCanvasHieght(sizeChange) || sizeChange < 0) {
         updateLine(SIZE_CHANGE_FACTOR * sizeChange, SIZE_TYPE);
@@ -76,6 +92,7 @@ function onUpdateLineSize(sizeChange) {
 }
 
 function onUpdateLineAlign(align) {
+    if(!getMeme().isSelectedLine) return;
     drawSelectedImage();
     updateLine(align, ALIGN_TYPE);
     if (isOutOfCanvasWidth()) {
@@ -94,11 +111,21 @@ function onUpdateLineAlign(align) {
 }
 
 function onUpdateLineColor(color) {
+    if(!getMeme().isSelectedLine) return;
     drawSelectedImage();
     updateLine(color, COLOR_TYPE);
     drawCanvas();
 }
+
+function onUpdateLineFrameColor(color) {
+    if(!getMeme().isSelectedLine) return;
+    drawSelectedImage();
+    updateLine(color, COLOR_FRAME_TYPE);
+    drawCanvas();
+}
+
 function onUpdateLinePos(posChange) {
+    if(!getMeme().isSelectedLine) return;
     drawSelectedImage();
     if (isMoveOutOfCanvasHieght(posChange)) {
         updateLine(posChange, POS_TYPE);
@@ -156,10 +183,10 @@ function drawCanvas() {
         gCtx.lineWidth = '2';
         if (meme.selectedLineIdx === line.id) {
             gCtx.strokeStyle = 'blue';
-            gCtx.fillStyle = 'red';
+            gCtx.fillStyle = line.color;
             setInputLineText();
         } else {
-            gCtx.strokeStyle = 'black';
+            gCtx.strokeStyle = line.frameColor;
             gCtx.fillStyle = line.color;
         }
         gCtx.font = line.size + 'px' + ' impact';
@@ -178,10 +205,17 @@ function clearCanvas() {
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
 }
 
+function downloadMeme(elLink) {
+    const data = gCanvas.toDataURL();
+    elLink.href = data;
+    elLink.download = 'my-image.jpg';
+}
+
+
 function renderGallery() {
     const gallery = getGallery();
     var htmlImgs = gallery.map(item => {
-        return `<img class="gallery-img" src="${item.url}" onclick="onSelectImge(${item.id})">`;
+        return `<img class="gallery-img" src="${item.url}" onclick="onSelectImge(${item.id})"   >`;
     });
     document.querySelector('.gallery-container').innerHTML = htmlImgs.join('');
 }

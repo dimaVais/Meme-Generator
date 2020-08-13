@@ -12,44 +12,80 @@
 
 <body onload="init()">
 
-    <header>
+    <header class="flex-row space-between">
+        <div class="logo"><img src="img/logo.png"></div>
+        <nav class="flex-row space-between">
+            <button class="nav-item gallery-btn" onclick="toggleEditor()">Gallery</button>
+            <button class="nav-item memes-btn">Memes</button>
+            <button class="nav-item about-btn">About</button>
+        </nav>
 
     </header>
     <main>
-        <section class="meme-container flex-row space-between">
+        <section class="gallery">
+            <div class="gallery-container"></div>
+        </section>
+        <section class="meme-container  hidden">
             <div class="canvas-container">
-                <canvas id="meme-canvas" dir="ltr" height="500" width="500  " onclick="onSelectImge()" >
+                <canvas id="meme-canvas" dir="ltr" height="500" width="500  " onclick="onSelectImge()">
             </div>
-            <div class="menu-container">
-                <input type="menu-btn text" class="line" placeholder="Insert meme text" oninput="onUpdateLineText(this.value)">
+            <div class="menu-container flex-col space-between">
+                <input type="menu-btn" class="line" placeholder="Insert meme text"
+                    oninput="onUpdateLineText(this.value)">
 
-                <button class="menu-btn move-between" onclick="onSelectLine()"><i class="fas fa-arrows-alt-v"></i></button>
-                <button class="menu-btn add" onclick="onAddLine()"><i class="fas fa-plus-square"></i></button>
-                <button class="menu-btn remove" onclick="onRemoveLine()"><i class="fas fa-trash-alt"></i></button>
+                <div class="flex-row space-between order-menu-container">
+                    <button class="menu-btn move-between" onclick="onSelectLine()"><i
+                            class="fas fa-arrows-alt-v"></i></button>
+                    <button class="menu-btn add" onclick="onAddLine()"><i class="fas fa-plus-square"></i></button>
+                    <button class="menu-btn remove" onclick="onRemoveLine()"><i class="fas fa-trash-alt"></i></button>
 
-                <button class="menu-btn line-up" onclick="onUpdateLinePos(-1)"><i class="fas fa-arrow-circle-up"></i></button>
-                <button class="menu-btn line-down" onclick="onUpdateLinePos(1)"><i class="fas fa-arrow-circle-down"></i></button>
-              
-                <button class="menu-btn larger-txt" value="larger" onclick="onUpdateLineSize(1)"><i class="fas fa-search-plus"></i></button>
-                <button class="menu-btn small-txt" value = "smaller" onclick="onUpdateLineSize(-1)"><i class="fas fa-search-minus"></i></button>
-               
-                <button class="menu-btn left" value="right" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-left"></i></button>
-                <button class="menu-btn center" value="center" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-center"></i></button>
-                <button class="menu-btn right" value="left" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-right"></i></button>
-                
-                <input  class="menu-btn txt-color" type="color" name="color" onchange="onUpdateLineColor(this.value)" >
+                    <button class="menu-btn line-up" onclick="onUpdateLinePos(-1)"><i
+                            class="fas fa-arrow-circle-up"></i></button>
+                    <button class="menu-btn line-down" onclick="onUpdateLinePos(1)"><i
+                            class="fas fa-arrow-circle-down"></i></button>
+                </div>
+                <div class="flex-row space-between align-menu-container">
+                    <button class="menu-btn larger-txt" value="larger" onclick="onUpdateLineSize(1)"><i
+                            class="fas fa-search-plus"></i></button>
+                    <button class="menu-btn small-txt" value="smaller" onclick="onUpdateLineSize(-1)"><i
+                            class="fas fa-search-minus"></i></button>
+
+                    <button class="menu-btn left" value="right" onclick="onUpdateLineAlign(this.value)"><i
+                            class="fas fa-align-left"></i></button>
+                    <button class="menu-btn center" value="center" onclick="onUpdateLineAlign(this.value)"><i
+                            class="fas fa-align-center"></i></button>
+                    <button class="menu-btn right" value="left" onclick="onUpdateLineAlign(this.value)"><i
+                            class="fas fa-align-right"></i></button>
+                </div>
+                <div class="flex-row align-center space-between font-menu-container">
+                    <select class="font-select">
+                        <option value="impact">impact</option>
+                        <option value="Arial, Helvetica, sans-serif">Arial</option>
+                        <option value="Comic Sans MS, cursive, sans-serif">Comic Sans MS</option>
+                        <option value="Lucida Console, Monaco, monospace">Lucida Console</option>
+                    </select>
+                    <input class=" fas fa-edit menu-btn frame-color" type="color" name="frame-color"
+                        onchange="onUpdateLineFrameColor(this.value)">
+                    <input class=" fas fa-palette menu-btn txt-color" type="color" name=" txt-color"
+                        onchange="onUpdateLineColor(this.value)">
+                </div>
+                <div class="act-btn-container flex-row space-between">
+                    <button class="act-btn share">SHARE</button>
+                    <button class="act-btn download">
+                        <a  onclick="downloadMeme(this)" download="">DOWNLOAD</a>
+                    </button>
+                </div>
             </div>
         </section>
-
-      
     </main>
 
-    <footer>
-
+    <footer class="flex-row justify-center align-center" align-center>
+        <div class="foot-container flex-col justify-center">
+            <div class="logo"><img src="img/logo.png"></div>
+            <div class="rights">all rights reserved 2020</div>
+        </div>
     </footer>
-    <section class="gallery">
-        <div class="gallery-container"></div>
-    </section>
+
     <script src='js/utils.js'></script>
     <script src='js/storage-service.js'></script>
     <script src='js/memegen-service.js'></script>

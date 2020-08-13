@@ -4,6 +4,7 @@
 const DEF_LINE_SIZE = 60;
 const DEF_LINE_ALIGN = 'center';
 const DEF_LINE_COLOR = 'white';
+const DEF_LINE_FRAME_COLOR = 'black';
 const DEF_TXT = 'Insert Text Here';
 const CANVSA_WIDTH = 500;
 
@@ -41,7 +42,8 @@ var gMeme = {
             txt: DEF_TXT,
             size: DEF_LINE_SIZE,
             align: DEF_LINE_ALIGN,
-            color: DEF_LINE_COLOR
+            color: DEF_LINE_COLOR,
+            frameColor: DEF_LINE_FRAME_COLOR
         }
     ]
 }
@@ -61,7 +63,8 @@ function addLine(y) {
             txt: DEF_TXT,
             size: DEF_LINE_SIZE,
             align: DEF_LINE_ALIGN,
-            color: DEF_LINE_COLOR
+            color: DEF_LINE_COLOR,
+            frameColor: DEF_LINE_FRAME_COLOR
         }
     } else {
         line = _addDefaultLine()
@@ -76,7 +79,8 @@ function _addDefaultLine() {
         txt: DEF_TXT,
         size: DEF_LINE_SIZE,
         align: DEF_LINE_ALIGN,
-        color: DEF_LINE_COLOR
+        color: DEF_LINE_COLOR,
+        frameColor: DEF_LINE_FRAME_COLOR
     }
 }
 
@@ -94,6 +98,9 @@ function updateLine(data, type) {
             break;
         case COLOR_TYPE:
             updateLine.color = data;
+            break;
+        case COLOR_FRAME_TYPE:
+            updateLine.frameColor = data;
             break;
         case POS_TYPE:
             updateLine.pos.y = updateLine.pos.y + updateLine.size * data;
@@ -129,21 +136,16 @@ function getLineByIdx(idx = 0) {
 }
 
 function setSelectNextLine() {
-    // if (gMeme.selectedLineIdx === -Infinity) {
-    //     gMeme.selectedLineIdx = 0;
-    //     gMeme.isSelectedLine = true;
-    // }
 
-    // if (gMeme.selectedLineIdx + 1 <= gMeme.lines.length) {
-    //     var nextLine = ++gMeme.selectedLineIdx;
-    //     gMeme.selectedLineIdx = nextLine;
-    //     gMeme.isSelectedLine = true;
-    // } else {
-    //     gMeme.selectedLineIdx === -Infinity;
-    //     gMeme.isSelectedLine = false;
-    // }
-
-    // console.log('meme:', gMeme);
+    if (gMeme.selectedLineIdx < gMeme.lines.length && gMeme.lines.length > 0) {
+        ++gMeme.selectedLineIdx;
+        if (gMeme.selectedLineIdx >= gMeme.lines.length) {
+            gMeme.isSelectedLine = false;
+        }
+    } else {
+        gMeme.isSelectedLine = true;
+        gMeme.selectedLineIdx = 0;
+    }
 }
 
 function setSelectedLinebyIdx(idx = 0) {
