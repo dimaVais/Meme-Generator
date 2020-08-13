@@ -18,23 +18,25 @@
     <main>
         <section class="meme-container flex-row space-between">
             <div class="canvas-container">
-                <canvas id="meme-canvas" dir="ltr" height="551" width="541" onclick="onSelectImge()" >
+                <canvas id="meme-canvas" dir="ltr" height="500" width="500  " onclick="onSelectImge()" >
             </div>
             <div class="menu-container">
                 <input type="menu-btn text" class="line" placeholder="Insert meme text" oninput="onUpdateLineText(this.value)">
 
-                <button class="menu-btn move-between"><i class="fas fa-arrows-alt-v"></i></button>
-                <button class="menu-btn add"><i class="fas fa-plus-square"></i></button>
-                <button class="menu-btn remove"><i class="fas fa-trash-alt"></i></button>
+                <button class="menu-btn move-between" onclick="onSelectLine()"><i class="fas fa-arrows-alt-v"></i></button>
+                <button class="menu-btn add" onclick="onAddLine()"><i class="fas fa-plus-square"></i></button>
+                <button class="menu-btn remove" onclick="onRemoveLine()"><i class="fas fa-trash-alt"></i></button>
 
                 <button class="menu-btn line-up" onclick="onUpdateLinePos(-1)"><i class="fas fa-arrow-circle-up"></i></button>
                 <button class="menu-btn line-down" onclick="onUpdateLinePos(1)"><i class="fas fa-arrow-circle-down"></i></button>
               
                 <button class="menu-btn larger-txt" value="larger" onclick="onUpdateLineSize(1)"><i class="fas fa-search-plus"></i></button>
                 <button class="menu-btn small-txt" value = "smaller" onclick="onUpdateLineSize(-1)"><i class="fas fa-search-minus"></i></button>
+               
                 <button class="menu-btn left" value="right" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-left"></i></button>
                 <button class="menu-btn center" value="center" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-center"></i></button>
                 <button class="menu-btn right" value="left" onclick="onUpdateLineAlign(this.value)"><i class="fas fa-align-right"></i></button>
+                
                 <input  class="menu-btn txt-color" type="color" name="color" onchange="onUpdateLineColor(this.value)" >
             </div>
         </section>

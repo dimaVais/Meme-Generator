@@ -4,7 +4,8 @@
 const DEF_LINE_SIZE = 60;
 const DEF_LINE_ALIGN = 'center';
 const DEF_LINE_COLOR = 'white';
-const CANVSA_WIDTH = 541;
+const DEF_TXT = 'Insert Text Here';
+const CANVSA_WIDTH = 500;
 
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 
@@ -32,11 +33,13 @@ var gImgs = [
 var gMeme = {
     selectedImgId: 5,
     selectedLineIdx: 0,
+    isSelectedLine: true,
     lines: [
         {
-            pos: { x: CANVSA_WIDTH / 2, y: 50 },
-            txt: 'Insert Text Here',
-            size: DEF_LINE_SIZE + 'px',
+            id: 0,
+            pos: { x: CANVSA_WIDTH / 2, y: DEF_LINE_SIZE },
+            txt: DEF_TXT,
+            size: DEF_LINE_SIZE,
             align: DEF_LINE_ALIGN,
             color: DEF_LINE_COLOR
         }
@@ -49,16 +52,32 @@ function setSelectrdImg(imgId) {
     gMeme.selectedImgId = imgToSet.id;
 }
 
-function addLine(txt, size, align, color, x, y) {
-    let line =
-    {
-        pos: { x: x, y: y },
-        txt: txt,
-        size: size + 'px',
-        align: align,
-        color: color
+function addLine(y) {
+    if (gMeme.lines.length > 0) {
+        var line =
+        {
+            id: gMeme.lines.length,
+            pos: { x: CANVSA_WIDTH / 2, y: y },
+            txt: DEF_TXT,
+            size: DEF_LINE_SIZE,
+            align: DEF_LINE_ALIGN,
+            color: DEF_LINE_COLOR
+        }
+    } else {
+        line = _addDefaultLine()
     }
     gMeme.lines.push(line);
+}
+
+function _addDefaultLine() {
+    return {
+        id: 0,
+        pos: { x: CANVSA_WIDTH / 2, y: DEF_LINE_SIZE },
+        txt: DEF_TXT,
+        size: DEF_LINE_SIZE,
+        align: DEF_LINE_ALIGN,
+        color: DEF_LINE_COLOR
+    }
 }
 
 function updateLine(data, type) {
@@ -68,10 +87,7 @@ function updateLine(data, type) {
             updateLine.txt = data;
             break;
         case SIZE_TYPE:
-            console.log(updateLine.size);
-            let newSize = parseInt(updateLine.size.substring(0, updateLine.size.length - 2)) + data;
-            console.log(newSize);
-            updateLine.size = newSize + 'px';
+            updateLine.size += data;
             break;
         case ALIGN_TYPE:
             updateLine.align = data;
@@ -80,10 +96,28 @@ function updateLine(data, type) {
             updateLine.color = data;
             break;
         case POS_TYPE:
-            let lineTxtSize = parseInt(updateLine.size.substring(0, updateLine.size.length - 2));
-            updateLine.pos.y = updateLine.pos.y + lineTxtSize * data;
+            updateLine.pos.y = updateLine.pos.y + updateLine.size * data;
             break;
     }
+}
+
+function directUpdateLinePosY(newPosY, fontHeight) {
+    let updateLine = gMeme.lines[gMeme.selectedLineIdx];
+    if (newPosY === 0) updateLine.pos.y = newPosY + fontHeight;
+    else updateLine.pos.y = newPosY;
+}
+
+function directUpdateLinePosX(newPosX, txtWidth) {
+    let updateLine = gMeme.lines[gMeme.selectedLineIdx];
+    if (newPosX === 0) updateLine.pos.x = newPosX + txtWidth;
+    else if (newPosX === CANVSA_WIDTH) updateLine.pos.x = newPosX - txtWidth;
+    else updateLine.pos.x = CANVSA_WIDTH / 2;
+}
+
+function removeSelectedLine() {
+    let deletedIdx = gMeme.selectedLineIdx;
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+    gMeme.selectedLineIdx = (deletedIdx - 1 >= 0) ? deletedIdx - 1 : 0;
 }
 
 function getSelectedImg() {
@@ -94,10 +128,45 @@ function getLineByIdx(idx = 0) {
     return gMeme.lines[idx];
 }
 
+function setSelectNextLine() {
+    // if (gMeme.selectedLineIdx === -Infinity) {
+    //     gMeme.selectedLineIdx = 0;
+    //     gMeme.isSelectedLine = true;
+    // }
+
+    // if (gMeme.selectedLineIdx + 1 <= gMeme.lines.length) {
+    //     var nextLine = ++gMeme.selectedLineIdx;
+    //     gMeme.selectedLineIdx = nextLine;
+    //     gMeme.isSelectedLine = true;
+    // } else {
+    //     gMeme.selectedLineIdx === -Infinity;
+    //     gMeme.isSelectedLine = false;
+    // }
+
+    // console.log('meme:', gMeme);
+}
+
+function setSelectedLinebyIdx(idx = 0) {
+    gMeme.selectedLineIdx = idx;
+}
+
+function getSelectedLine() {
+    return gMeme.lines[gMeme.selectedLineIdx];
+}
+
 function getMeme() {
     return gMeme
 }
 
 function getGallery() {
     return gImgs;
+}
+
+function getDefVals() {
+    return {
+        lineSize: DEF_LINE_SIZE,
+        align: DEF_LINE_ALIGN,
+        color: DEF_LINE_COLOR,
+        txt: DEF_TXT
+    }
 }

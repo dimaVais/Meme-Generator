@@ -15,7 +15,6 @@ function init() {
     gCanvas = document.getElementById('meme-canvas');
     gCtx = gCanvas.getContext('2d');
     renderGallery();
-    checkIfOutOfCanvas();
 }
 
 function onSelectImge(imgId = 2) {
@@ -32,16 +31,40 @@ function drawSelectedImage() {
         img.onload = () => {
             gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
             gIsImg = true;
+            drawCanvas();
         }
     } else {
         gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
     }
 }
 
+function onAddLine() {
+    let meme = getMeme();
+    let len = meme.lines.length;
+    if (len === 1) var posY = gCanvas.height - getDefVals().lineSize;
+    else if (len === 2) posY = gCanvas.height / 2;
+    else if (len === 3) posY = gCanvas.height / 3;
+    else if (len === 4) posY = gCanvas.height * (2 / 3);
+    else posY = gCanvas.height;
+
+    addLine(posY);
+    setSelectedLinebyIdx(len);
+    drawCanvas();
+}
+
+function onSelectLine() {
+    setSelectNextLine();
+    drawCanvas();
+}
+
 function onUpdateLineText(text) {
     drawSelectedImage();
+    if (getLineTextWidth() + geTextWidth(text) > gCanvas.width) {
+        let currLine = getSelectedLine();
+        directUpdateLinePosY(currLine.pos.y, getLineFontHeight)
+    }
     updateLine(text, TXT_TYPE);
-    drawText();
+    drawCanvas();
 }
 
 function onUpdateLineSize(sizeChange) {
@@ -49,55 +72,106 @@ function onUpdateLineSize(sizeChange) {
     if (isFontOutOfCanvasHieght(sizeChange) || sizeChange < 0) {
         updateLine(SIZE_CHANGE_FACTOR * sizeChange, SIZE_TYPE);
     }
-    drawText();
+    drawCanvas();
 }
 
 function onUpdateLineAlign(align) {
     drawSelectedImage();
     updateLine(align, ALIGN_TYPE);
-    drawText();
+    if (isOutOfCanvasWidth()) {
+        drawCanvas();
+    } else {
+        if (align === 'right') {
+            var borderX = 0;
+        } else if (align === 'left') {
+            borderX = gCanvas.width;
+        } else {
+            borderX = gCanvas.width / 2
+        }
+        directUpdateLinePosX(borderX, getLineTextWidth());
+        drawCanvas();
+    }
 }
 
 function onUpdateLineColor(color) {
     drawSelectedImage();
     updateLine(color, COLOR_TYPE);
-    drawText();
+    drawCanvas();
 }
 function onUpdateLinePos(posChange) {
     drawSelectedImage();
     if (isMoveOutOfCanvasHieght(posChange)) {
         updateLine(posChange, POS_TYPE);
+    } else {
+        let borderY = (posChange < 0) ? 0 : gCanvas.height;
+        directUpdateLinePosY(borderY, getLineFontHeight());
     }
-    drawText();
+    drawCanvas();
+}
+
+function onRemoveLine() {
+    removeSelectedLine();
+    drawCanvas();
 }
 
 function isMoveOutOfCanvasHieght(posChange) {
-    let meme = getMeme();
-    let currLine = meme.lines[meme.selectedLineIdx];
-    let lineTxtSize = parseInt(currLine.size.substring(0, currLine.size.length - 2));
-    if (currLine.pos.y + lineTxtSize * posChange < 0 + lineTxtSize || currLine.pos.y + lineTxtSize * posChange > gCanvas.height) return false;
+    const currLine = getSelectedLine();
+    if (currLine.pos.y + currLine.size * posChange < 0 + currLine.size || currLine.pos.y + currLine.size * posChange > gCanvas.height) return false;
     else return true;
 }
 
 function isFontOutOfCanvasHieght(sizeChange) {
-    let meme = getMeme();
-    let currLine = meme.lines[meme.selectedLineIdx];
-    let lineTxtSize = parseInt(currLine.size.substring(0, currLine.size.length - 2));
-    if (currLine.pos.y + SIZE_CHANGE_FACTOR * sizeChange < 0 + lineTxtSize) return false;
+    const currLine = getSelectedLine();
+    if (currLine.pos.y + SIZE_CHANGE_FACTOR * sizeChange < 0 + currLine.size) return false;
     else return true;
 }
 
-function isMoveOutOfCanvasHieght(posChange)
+function isOutOfCanvasWidth() {
+    const currLine = getSelectedLine();
+    const txtxWidth = gCtx.measureText(currLine.txt).width;
+    if (currLine.pos.x - txtxWidth < 0 || currLine.pos.x + txtxWidth > gCanvas.width) return false;
+    else return true;
+}
 
-function drawText() {
-    let line = getLineByIdx(0);
-    gCtx.lineWidth = '2';
-    gCtx.strokeStyle = 'black';
-    gCtx.fillStyle = line.color;
-    gCtx.font = line.size + ' impact';
-    gCtx.textAlign = line.align;
-    gCtx.fillText(line.txt, line.pos.x, line.pos.y);
-    gCtx.strokeText(line.txt, line.pos.x, line.pos.y);
+function getLineFontHeight() {
+    const currLine = getSelectedLine();
+    let fontOfLine = currLine.size + 'pt' + ' impact';
+    return parseInt(fontOfLine);
+}
+
+function getLineTextWidth() {
+    const currLine = getSelectedLine();
+    return gCtx.measureText(currLine.txt).width;
+}
+
+function geTextWidth(text) {
+    return gCtx.measureText(text).width;
+}
+
+function drawCanvas() {
+    clearCanvas();
+    drawSelectedImage();
+    const meme = getMeme()
+    meme.lines.forEach(line => {
+        gCtx.lineWidth = '2';
+        if (meme.selectedLineIdx === line.id) {
+            gCtx.strokeStyle = 'blue';
+            gCtx.fillStyle = 'red';
+            setInputLineText();
+        } else {
+            gCtx.strokeStyle = 'black';
+            gCtx.fillStyle = line.color;
+        }
+        gCtx.font = line.size + 'px' + ' impact';
+        gCtx.textAlign = line.align;
+        gCtx.fillText(line.txt, line.pos.x, line.pos.y);
+        gCtx.strokeText(line.txt, line.pos.x, line.pos.y);
+    });
+}
+
+function setInputLineText() {
+    const currLine = getSelectedLine();
+    document.querySelector('.line').value = currLine.txt;
 }
 
 function clearCanvas() {
@@ -109,6 +183,5 @@ function renderGallery() {
     var htmlImgs = gallery.map(item => {
         return `<img class="gallery-img" src="${item.url}" onclick="onSelectImge(${item.id})">`;
     });
-    console.log(htmlImgs);
     document.querySelector('.gallery-container').innerHTML = htmlImgs.join('');
 }
