@@ -46,8 +46,9 @@ function onUpdateLineText(text) {
 
 function onUpdateLineSize(sizeChange) {
     drawSelectedImage();
-    console.log(SIZE_CHANGE_FACTOR * sizeChange);
-    updateLine(SIZE_CHANGE_FACTOR * sizeChange, SIZE_TYPE);
+    if (isFontOutOfCanvasHieght(sizeChange) || sizeChange < 0) {
+        updateLine(SIZE_CHANGE_FACTOR * sizeChange, SIZE_TYPE);
+    }
     drawText();
 }
 
@@ -64,13 +65,13 @@ function onUpdateLineColor(color) {
 }
 function onUpdateLinePos(posChange) {
     drawSelectedImage();
-    if (checkIfOutOfCanvasHieght(posChange)) {
+    if (isMoveOutOfCanvasHieght(posChange)) {
         updateLine(posChange, POS_TYPE);
     }
     drawText();
 }
 
-function checkIfOutOfCanvasHieght(posChange) {
+function isMoveOutOfCanvasHieght(posChange) {
     let meme = getMeme();
     let currLine = meme.lines[meme.selectedLineIdx];
     let lineTxtSize = parseInt(currLine.size.substring(0, currLine.size.length - 2));
@@ -78,6 +79,15 @@ function checkIfOutOfCanvasHieght(posChange) {
     else return true;
 }
 
+function isFontOutOfCanvasHieght(sizeChange) {
+    let meme = getMeme();
+    let currLine = meme.lines[meme.selectedLineIdx];
+    let lineTxtSize = parseInt(currLine.size.substring(0, currLine.size.length - 2));
+    if (currLine.pos.y + SIZE_CHANGE_FACTOR * sizeChange < 0 + lineTxtSize) return false;
+    else return true;
+}
+
+function isMoveOutOfCanvasHieght(posChange)
 
 function drawText() {
     let line = getLineByIdx(0);
