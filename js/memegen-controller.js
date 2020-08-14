@@ -19,10 +19,10 @@ function init() {
     resetMeme();
 }
 
-function toggleEditor(){
-    const memeEditor =  document.querySelector('.meme-container');
-    const gallery =  document.querySelector('.gallery');
-    const about =  document.querySelector('.about');
+function toggleEditor() {
+    const memeEditor = document.querySelector('.meme-container');
+    const gallery = document.querySelector('.gallery');
+    const about = document.querySelector('.about');
     const galBtn = document.querySelector('#gallery-btn');
 
     memeEditor.classList.toggle('flex-row');
@@ -35,7 +35,16 @@ function toggleEditor(){
     about.classList.toggle('align-center');
     galBtn.classList.toggle('no-click');
 }
- 
+
+function openMenu() {
+    const elNavBar = document.querySelector('.nav-bar');
+    const elBars = document.querySelector('.bars');
+    const elClose = document.querySelector('.close');
+    elNavBar.classList.toggle('nav-open');
+    elBars.classList.toggle('hidden');
+    elClose.classList.toggle('hidden');
+}
+
 
 function onSelectImge(imgId = 2) {
     resetMeme();
@@ -80,7 +89,7 @@ function onSelectLine() {
 }
 
 function onUpdateLineText(text) {
-    if(!getMeme().isSelectedLine) return;
+    if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     if (getLineTextWidth() + geTextWidth(text) > gCanvas.width) {
         let currLine = getSelectedLine();
@@ -91,7 +100,7 @@ function onUpdateLineText(text) {
 }
 
 function onUpdateLineSize(sizeChange) {
-    if(!getMeme().isSelectedLine) return;
+    if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     if (isFontOutOfCanvasHieght(sizeChange) || sizeChange < 0) {
         updateLine(SIZE_CHANGE_FACTOR * sizeChange, SIZE_TYPE);
@@ -100,7 +109,7 @@ function onUpdateLineSize(sizeChange) {
 }
 
 function onUpdateLineAlign(align) {
-    if(!getMeme().isSelectedLine) return;
+    if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     updateLine(align, ALIGN_TYPE);
     if (isOutOfCanvasWidth()) {
@@ -119,21 +128,21 @@ function onUpdateLineAlign(align) {
 }
 
 function onUpdateLineColor(color) {
-    if(!getMeme().isSelectedLine) return;
+    if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     updateLine(color, COLOR_TYPE);
     drawCanvas();
 }
 
 function onUpdateLineFrameColor(color) {
-    if(!getMeme().isSelectedLine) return;
+    if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     updateLine(color, COLOR_FRAME_TYPE);
     drawCanvas();
 }
 
 function onUpdateLinePos(posChange) {
-    if(!getMeme().isSelectedLine) return;
+    if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     if (isMoveOutOfCanvasHieght(posChange)) {
         updateLine(posChange, POS_TYPE);
@@ -227,9 +236,19 @@ function onSetCurrPage(changePage) {
 
 function renderGallery() {
     const gallery = getGallery();
-    console.log('gallery:',gallery);
+    console.log('gallery:', gallery);
     var htmlImgs = gallery.map(item => {
         return `<img class="gallery-img" src="${item.url}" onclick="onSelectImge(${item.id})"   >`;
     });
     document.querySelector('.gallery-container').innerHTML = htmlImgs.join('');
+}
+
+function sctollToAbout() {
+    var elAbout = document.querySelector('.about');
+    var rect = elAbout.getBoundingClientRect();
+    window.scrollTo({
+        top: rect.top,
+        left: rect.left,
+        behavior: 'smooth'
+    });
 }

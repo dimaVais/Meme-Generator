@@ -14,12 +14,15 @@
 
     <header class="flex-row space-between">
         <div class="logo"><img src="img/logo.png"></div>
-        <nav class="flex-row space-between">
+        <nav class="nav-bar flex-row space-between">
             <button class="nav-item gallery-btn no-click" id="gallery-btn" onclick="toggleEditor()">Gallery</button>
             <button class="nav-item memes-btn">Memes</button>
-            <button class="nav-item about-btn">About</button>
+            <button class="nav-item about-btn" onclick="sctollToAbout()">About</button>
         </nav>
-
+        <div class="hamburger hidden" onclick="openMenu()">
+            <i class="bars fas fa-bars z-index"></i>
+            <i class="close fas fa-times hidden"></i>
+        </div>
     </header>
     <main>
         <section class="gallery">
@@ -38,7 +41,7 @@
                 <input type="menu-btn" class="line" placeholder="Insert meme text"
                     oninput="onUpdateLineText(this.value)">
 
-                <div class="flex-row space-between order-menu-container">
+                <div class="menu-bar flex-row space-between order-menu-container">
                     <button class="menu-btn move-between" onclick="onSelectLine()"><i
                             class="fas fa-arrows-alt-v"></i></button>
                     <button class="menu-btn add" onclick="onAddLine()"><i class="fas fa-plus-square"></i></button>
@@ -49,7 +52,7 @@
                     <button class="menu-btn line-down" onclick="onUpdateLinePos(1)"><i
                             class="fas fa-arrow-circle-down"></i></button>
                 </div>
-                <div class="flex-row space-between align-menu-container">
+                <div class="menu-bar flex-row space-between align-menu-container">
                     <button class="menu-btn larger-txt" value="larger" onclick="onUpdateLineSize(1)"><i
                             class="fas fa-search-plus"></i></button>
                     <button class="menu-btn small-txt" value="smaller" onclick="onUpdateLineSize(-1)"><i
@@ -62,7 +65,7 @@
                     <button class="menu-btn right" value="left" onclick="onUpdateLineAlign(this.value)"><i
                             class="fas fa-align-right"></i></button>
                 </div>
-                <div class="flex-row align-center space-between font-menu-container">
+                <div class="menu-bar flex-row align-center space-between font-menu-container">
                     <select class="font-select">
                         <option value="impact">impact</option>
                         <option value="Arial, Helvetica, sans-serif">Arial</option>
@@ -95,13 +98,14 @@
                         Combine my love of memes and web software development.
                     </p>
                 </h2>
-                
+
                 <div class="my-icons-container flex-row space-between">
                     <div class="personal-icon-container">
-                       </i><a href="https://www.linkedin.com/in/dima-vaisberg-638b521b0/"> <i class="fab fa-linkedin-in personal-icon"></i></a>
+                        </i><a href="https://www.linkedin.com/in/dima-vaisberg-638b521b0/"> <i
+                                class="fab fa-linkedin-in personal-icon"></i></a>
                     </div>
                     <div class="personal-icon-container">
-                       <a href="https://github.com/dimaVais/"> <i class="fab fa-github personal-icon"></i></a>
+                        <a href="https://github.com/dimaVais/"> <i class="fab fa-github personal-icon"></i></a>
                     </div>
                 </div>
             </div>

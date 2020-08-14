@@ -27,7 +27,7 @@ header {
 }
 
 main {
-    width: 1200px;
+    width: 100%;
     margin: 0 auto;
     background-color: whitesmoke;
 }
@@ -139,6 +139,12 @@ i {
     box-shadow: inset 0 -6px 0 #040a2c;
 }
 
+.hamburger{
+    color: white;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
 .rights {
     width: 240px;
     height: 19px;
@@ -158,13 +164,9 @@ i {
 .gallery {
     background-color: var(--white-two);
     margin: 0 auto;
-    /* padding-top: 50px; */
     margin-bottom: 50px;
-    padding-bottom: 70px;
     width: 100%;
-    height: 932px;
     margin-top: 20px;
-    /* overflow: auto; */
 }
 
 .gallery-container {
@@ -173,8 +175,7 @@ i {
     grid-auto-flow: dense;
     justify-content: center;
     grid-gap: 22px;
-    grid-template-columns: repeat(3, minmax(175px, 1fr));
-    grid-template-rows: repeat(3, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(353px, 1fr));
 }
 
 .gallery-img {
@@ -185,6 +186,8 @@ i {
 
 .gallery-img:hover {
     opacity: 0.3;
+    border-radius: 50%;
+    transition: opacity 1s ease, border-radius 1s ease;
 }
 
 .pager-cntainer {
@@ -212,6 +215,7 @@ i {
     width: 100%;
     height: 567px;
     background-color: white;
+    overflow: scroll;
 }
 
 .me-img {
@@ -251,8 +255,9 @@ i {
     text-align: left;
     color: #000000;
 }
-.my-icons-container{
-    width:85px;
+
+.my-icons-container {
+    width: 85px;
 }
 
 .personal-icon-container {
@@ -260,9 +265,10 @@ i {
     height: 39px;
     border-radius: 12px;
     background-color: #ff7f00;
-    padding:5px;
+    padding: 5px;
 }
-.personal-icon{
+
+.personal-icon {
     font-size: 1.875rem;
     text-align: center;
     cursor: pointer;
@@ -279,6 +285,10 @@ i {
 
 .hidden {
     display: none;
+}
+
+.z-index{
+    z-index: 3;
 }
 
 /* action helpers */
@@ -312,4 +322,146 @@ i {
 
 .align-center {
     align-items: center;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width:920px) {
+    .meme-container {
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        height: 1000px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .info-container {
+        flex-direction: column;
+    }
+    .txt-container {
+        flex-direction: row;
+    }
+}
+
+@media screen and (max-width:530px) {
+    .meme-container {
+        justify-content: flex-start;
+    }
+    #meme-canvas {
+        width: 430px;
+        height: 430px;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .meme-container {
+        height: 700px;
+    }
+    #meme-canvas {
+        width: 330px;
+        height: 330px;
+    }
+    .menu-container {
+        width: 330px;
+        height: 330px;
+        margin-top: 10px;
+    }
+    .menu-btn {
+        width: 40px;
+        height: 40px;
+        padding: 3px;
+    }
+    i {
+        font-size: 2rem;
+    }
+    .act-btn {
+        width: 120px;
+        height: 30px;
+        font-size: 0.9rem;
+        font-weight: 300;
+    }
+    .font-select {
+        height: 30px;
+    }
+    .line {
+        margin: 0 auto;
+        height: 35px;
+        font-size: 0.9rem;
+        justify-self: center;
+    }
+    .gallery-container {
+        width: 100%;
+        display: grid;
+        grid-auto-flow: dense;
+        justify-content: center;
+        grid-gap: 22px;
+        grid-template-columns: repeat(auto-fill, minmax( 180px, 1fr));
+    }
+    .gallery-img {
+        width: 180px;
+        height: 180px;
+        justify-self: center;
+    }
+    .about {
+        height: 567px;
+    }
+    .my-name {
+        width: 273px;
+    }
+    .details {
+        width: 273px;
+    }
+    .me-img {
+        width: 200px;
+        height: 200px;
+    }
+    .info-container {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .txt-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: space-between;
+    }
+    .my-icons-container {
+        margin-top: 100px;
+    }
+
+    .nav-bar {
+        flex-direction: column;
+        justify-content: flex-start;
+        position: fixed;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        height: 40vh;
+        background: #ff7f00;
+        box-shadow: -8px 0px 20px rgb(0 0 0 / 10%);
+        transform: translateX(100%);
+        border-left: solid 1px #ccc;
+        transition: transform .8s, box-shadow 1s;
+    }
+    
+    .nav-open {
+        transform: translateX(0);
+        transition: transform .8s, box-shadow 1s;
+    }
+    .nav-item {
+        width: 100vw;
+        height: 100vh;
+        align-items: center;
+        border-bottom: 1px solid #dcdcdc;
+        padding: 0 20px;
+        font-size: 2rem;
+    }
+    .nav-item:hover {
+        background-color: rgb(204 204 204 / 20%);
+    }
+
+    .hamburger{
+        display: inline;
+        z-index: 3;
+    }
 }
