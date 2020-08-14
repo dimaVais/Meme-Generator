@@ -15,7 +15,7 @@
     <header class="flex-row space-between">
         <div class="logo"><img src="img/logo.png"></div>
         <nav class="flex-row space-between">
-            <button class="nav-item gallery-btn" onclick="toggleEditor()">Gallery</button>
+            <button class="nav-item gallery-btn no-click" id="gallery-btn" onclick="toggleEditor()">Gallery</button>
             <button class="nav-item memes-btn">Memes</button>
             <button class="nav-item about-btn">About</button>
         </nav>
@@ -23,7 +23,12 @@
     </header>
     <main>
         <section class="gallery">
+            <div class="pager-cntainer flex-row space-between">
+                <button class=" pager prev-page" onclick=onSetCurrPage(-1)>Prev-Page</button>
+                <button class=" pager next-page" onclick=onSetCurrPage(1)>Next-Page</button>
+            </div>
             <div class="gallery-container"></div>
+
         </section>
         <section class="meme-container  hidden">
             <div class="canvas-container">
@@ -72,13 +77,36 @@
                 <div class="act-btn-container flex-row space-between">
                     <button class="act-btn share">SHARE</button>
                     <button class="act-btn download">
-                        <a  onclick="downloadMeme(this)" download="">DOWNLOAD</a>
+                        <a onclick="downloadMeme(this)" download="">DOWNLOAD</a>
                     </button>
                 </div>
             </div>
         </section>
     </main>
-
+    <section class="about flex-row justify-center align-center">
+        <div class="info-container flex-row">
+            <div class="img-container flex-row space-between ">
+                <img class="me-img" src="img/me.jpg">
+            </div>
+            <div class="txt-container flex-col space-around">
+                <h2 class="my-name">
+                    Dima Vaisberg
+                    <p class="details">
+                        Combine my love of memes and web software development.
+                    </p>
+                </h2>
+                
+                <div class="my-icons-container flex-row space-between">
+                    <div class="personal-icon-container">
+                       </i><a href="https://www.linkedin.com/in/dima-vaisberg-638b521b0/"> <i class="fab fa-linkedin-in personal-icon"></i></a>
+                    </div>
+                    <div class="personal-icon-container">
+                       <a href="https://github.com/dimaVais/"> <i class="fab fa-github personal-icon"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <footer class="flex-row justify-center align-center" align-center>
         <div class="foot-container flex-col justify-center">
             <div class="logo"><img src="img/logo.png"></div>

@@ -16,8 +16,11 @@
 
 /*BASE*/
 
+body {
+    background-color: whitesmoke;
+}
+
 header {
-    margin: 0 auto;
     width: 100%;
     height: 66px;
     background-color: #ff7f00;
@@ -25,9 +28,8 @@ header {
 
 main {
     width: 1200px;
-    height: 600px;
     margin: 0 auto;
-    background-color: azure;
+    background-color: whitesmoke;
 }
 
 footer {
@@ -38,7 +40,7 @@ footer {
 }
 
 i {
-    font-size: 50px;
+    font-size: 3.152rem;
 }
 
 /* COMPONNENTS*/
@@ -49,6 +51,7 @@ i {
     padding-bottom: 23px;
     padding-left: 51px;
     padding-right: 136px;
+    height: 600px;
 }
 
 .canvas-container {
@@ -64,13 +67,13 @@ i {
     width: 100%;
     height: 60px;
     text-align: center;
-    font-size: 30px;
+    font-size: 1.875rem;
 }
 
 .menu-container {
     background-color: var(--white-two);
     max-width: 373px;
-    height: 550;
+    height: 500px;
 }
 
 .menu-btn {
@@ -99,7 +102,7 @@ i {
     border-radius: 12px;
     background-color: #ff7f00;
     font-family: Montserrat;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 500;
     text-align: center;
     color: #ffffff;
@@ -117,7 +120,7 @@ i {
 .nav-item {
     width: 75px;
     height: 100%;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -133,14 +136,14 @@ i {
 .nav-item:hover {
     outline: none;
     border: none;
-    box-shadow: -1px 0 0 #1d1d1d, inset 0 -6px 0 #040a2c;
+    box-shadow: inset 0 -6px 0 #040a2c;
 }
 
 .rights {
-    width: 206px;
+    width: 240px;
     height: 19px;
-    font-family: Montserrats;
-    font-size: 19px;
+    font-family: Montserrat;
+    font-size: 1.25rem;
     font-weight: 100;
     font-stretch: normal;
     font-style: normal;
@@ -155,30 +158,115 @@ i {
 .gallery {
     background-color: var(--white-two);
     margin: 0 auto;
-    padding: 10px;
-    width: 1200px;
-    height: 600px;
+    /* padding-top: 50px; */
+    margin-bottom: 50px;
+    padding-bottom: 70px;
+    width: 100%;
+    height: 932px;
     margin-top: 20px;
+    /* overflow: auto; */
 }
 
 .gallery-container {
-    /* padding-left: 50px; */
+    width: 100%;
     display: grid;
     grid-auto-flow: dense;
     justify-content: center;
     grid-gap: 22px;
-    grid-template-columns: repeat(6, minmax(175px, 1fr));
+    grid-template-columns: repeat(3, minmax(175px, 1fr));
     grid-template-rows: repeat(3, minmax(150px, 1fr));
 }
 
 .gallery-img {
-    width: 175px;
-    height: 150px;
+    width: 353px;
+    height: 278px;
     justify-self: center;
 }
 
 .gallery-img:hover {
     opacity: 0.3;
+}
+
+.pager-cntainer {
+    padding-inline-start: 16px;
+    padding-inline-end: 16px;
+    margin-bottom: 20px;
+}
+
+.pager {
+    width: 150px;
+    height: 30px;
+    border-radius: 12px;
+    background-color: #ff7f00;
+    font-family: Montserrat;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/*ABOUT*/
+
+.about {
+    width: 100%;
+    height: 567px;
+    background-color: white;
+}
+
+.me-img {
+    width: 322px;
+    height: 322px;
+    border-radius: 50%;
+}
+
+.txt-container {
+    margin-left: 39px;
+}
+
+.my-name {
+    width: 530px;
+    height: 21px;
+    font-family: Montserrat;
+    font-size: 25px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+
+.details {
+    width: 530px;
+    height: 43px;
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+.my-icons-container{
+    width:85px;
+}
+
+.personal-icon-container {
+    width: 39px;
+    height: 39px;
+    border-radius: 12px;
+    background-color: #ff7f00;
+    padding:5px;
+}
+.personal-icon{
+    font-size: 1.875rem;
+    text-align: center;
+    cursor: pointer;
+    color: white;
 }
 
 /* HELPERS */
@@ -191,6 +279,12 @@ i {
 
 .hidden {
     display: none;
+}
+
+/* action helpers */
+
+.no-click {
+    pointer-events: none;
 }
 
 /* flex helpers */

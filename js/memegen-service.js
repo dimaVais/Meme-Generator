@@ -7,7 +7,9 @@ const DEF_LINE_COLOR = 'white';
 const DEF_LINE_FRAME_COLOR = 'black';
 const DEF_TXT = 'Insert Text Here';
 const CANVSA_WIDTH = 500;
-
+const PAGE_SIZE = 9;
+var gStartIdx = 0;
+var gMeme;
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 
 var gImgs = [
@@ -31,23 +33,26 @@ var gImgs = [
     { id: 18, url: 'img/18.jpg', keywords: ['happy'] }
 ];
 
-var gMeme = {
-    selectedImgId: 5,
-    selectedLineIdx: 0,
-    isSelectedLine: true,
-    lines: [
-        {
-            id: 0,
-            pos: { x: CANVSA_WIDTH / 2, y: DEF_LINE_SIZE },
-            txt: DEF_TXT,
-            size: DEF_LINE_SIZE,
-            align: DEF_LINE_ALIGN,
-            color: DEF_LINE_COLOR,
-            frameColor: DEF_LINE_FRAME_COLOR
-        }
-    ]
-}
 
+
+function resetMeme() {
+    gMeme = {
+        selectedImgId: 5,
+        selectedLineIdx: 0,
+        isSelectedLine: true,
+        lines: [
+            {
+                id: 0,
+                pos: { x: CANVSA_WIDTH / 2, y: DEF_LINE_SIZE },
+                txt: DEF_TXT,
+                size: DEF_LINE_SIZE,
+                align: DEF_LINE_ALIGN,
+                color: DEF_LINE_COLOR,
+                frameColor: DEF_LINE_FRAME_COLOR
+            }
+        ]
+    }
+}
 
 function setSelectrdImg(imgId) {
     let imgToSet = gImgs.find(img => { return img.id === imgId });
@@ -160,15 +165,25 @@ function getMeme() {
     return gMeme
 }
 
-function getGallery() {
-    return gImgs;
-}
-
 function getDefVals() {
     return {
         lineSize: DEF_LINE_SIZE,
         align: DEF_LINE_ALIGN,
         color: DEF_LINE_COLOR,
         txt: DEF_TXT
+    }
+}
+
+// ----------- GALLERY FUNCTIONS --------------------
+function getGallery() {
+    return gImgs.slice(gStartIdx, gStartIdx + PAGE_SIZE);
+}
+
+function setCurrentPage(movePageIdx) {
+    gStartIdx += PAGE_SIZE * movePageIdx;
+    if (gStartIdx >= gImgs.length) gStartIdx = 0;
+    else if (gStartIdx < 0) {
+        gStartIdx = ((gImgs.length - PAGE_SIZE) % PAGE_SIZE === 0) ? gImgs.length - PAGE_SIZE :
+            gImgs.length - (gImgs.length - PAGE_SIZE) % PAGE_SIZE;
     }
 }
