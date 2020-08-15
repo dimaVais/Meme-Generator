@@ -83,7 +83,7 @@ i {
     cursor: pointer;
 }
 
-.menu-color{
+.menu-color {
     width: 50px;
     height: 50px;
 }
@@ -144,7 +144,7 @@ i {
     box-shadow: inset 0 -6px 0 #040a2c;
 }
 
-.hamburger{
+.hamburger {
     color: white;
     padding-right: 10px;
     padding-top: 10px;
@@ -189,6 +189,12 @@ i {
     justify-self: center;
 }
 
+.meme-img {
+    width: 353px;
+    height: 278px;
+    justify-self: center;
+}
+
 .gallery-img:hover {
     opacity: 0.3;
     border-radius: 50%;
@@ -212,6 +218,29 @@ i {
     text-align: center;
     color: #ffffff;
     cursor: pointer;
+}
+
+.meme-btn-container {
+    margin-top: 3.5%;
+}
+
+.meme-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: #ff7f00;
+    font-family: Montserrat;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 30px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.meme-opt-icon {
+    font-size: 1.5rem;
+    color: #ffffff;
 }
 
 /*ABOUT*/
@@ -292,8 +321,19 @@ i {
     display: none;
 }
 
-.z-index{
+.z-index {
     z-index: 3;
+}
+
+/* Position-Helpers */
+
+.absolute {
+    position: absolute;
+}
+
+.fixed {
+    position: fixed;
+    right: 0;
 }
 
 /* action helpers */
@@ -376,12 +416,10 @@ i {
         height: 40px;
         padding: 3px;
     }
-
-    .menu-color{
+    .menu-color {
         width: 30px;
         height: 30px;
     }
-
     i {
         font-size: 2rem;
     }
@@ -413,6 +451,11 @@ i {
         height: 180px;
         justify-self: center;
     }
+    .meme-img {
+        width: 180px;
+        height: 180px;
+        justify-self: center;
+    }
     .about {
         height: 567px;
     }
@@ -439,7 +482,6 @@ i {
     .my-icons-container {
         margin-top: 100px;
     }
-
     .nav-bar {
         flex-direction: column;
         justify-content: flex-start;
@@ -454,7 +496,6 @@ i {
         border-left: solid 1px #ccc;
         transition: transform .8s, box-shadow 1s;
     }
-    
     .nav-open {
         transform: translateX(0);
         transition: transform .8s, box-shadow 1s;
@@ -470,9 +511,15 @@ i {
     .nav-item:hover {
         background-color: rgb(204 204 204 / 20%);
     }
-
-    .hamburger{
+    .hamburger {
         display: inline;
         z-index: 3;
+    }
+    .meme-btn-container {
+        width: 180px;
+        margin-top: 20%;
+        flex-direction: row;
+        justify-content: center;
+        align-items: space-between;
     }
 }

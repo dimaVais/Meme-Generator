@@ -14,6 +14,8 @@ const MY_MEMES_KEY = 'MY_MEMES';
 var gStartIdx = 0;
 var gMeme;
 var gMyMemes;
+var gGalleryMode;
+
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 
 var gImgs = [
@@ -66,28 +68,10 @@ function setSelectrdImg(imgId) {
 }
 
 function addLine(y) {
-    if (gMeme.lines.length > 0) {
-        var line =
-        {
-            id: gMeme.lines.length,
-            pos: { x: CANVSA_WIDTH / 2, y: y },
-            txt: DEF_TXT,
-            size: DEF_LINE_SIZE,
-            align: DEF_LINE_ALIGN,
-            color: DEF_LINE_COLOR,
-            frameColor: DEF_LINE_FRAME_COLOR,
-            font: DEF_FONT
-        }
-    } else {
-        line = _addDefaultLine()
-    }
-    gMeme.lines.push(line);
-}
-
-function _addDefaultLine() {
-    return {
-        id: 0,
-        pos: { x: CANVSA_WIDTH / 2, y: DEF_LINE_SIZE },
+    var line =
+    {
+        id: gMeme.lines.length,
+        pos: { x: CANVSA_WIDTH / 2, y: y },
         txt: DEF_TXT,
         size: DEF_LINE_SIZE,
         align: DEF_LINE_ALIGN,
@@ -95,6 +79,7 @@ function _addDefaultLine() {
         frameColor: DEF_LINE_FRAME_COLOR,
         font: DEF_FONT
     }
+    gMeme.lines.push(line);
 }
 
 function updateLine(data, type) {
@@ -185,12 +170,21 @@ function getDefVals() {
     }
 }
 
+// ----------- MEMES GALLERY FUNCTIONS --------------------
+
+
 function addToMyMemes(memeFile) {
     const meme = {
         id: makeId(),
         meme: memeFile
     }
     gMyMemes.push(meme);
+    saveToStorage(MY_MEMES_KEY, gMyMemes);
+}
+
+function removeMeme(memeId) {
+    const memeIdxToRemove = gMyMemes.findIndex(meme => meme.id === memeId);
+    gMyMemes.splice(memeIdxToRemove, 1);
     saveToStorage(MY_MEMES_KEY, gMyMemes);
 }
 
@@ -208,11 +202,25 @@ function getGallery() {
     return gImgs.slice(gStartIdx, gStartIdx + PAGE_SIZE);
 }
 
+function setGalleryMode(mode) {
+    gGalleryMode = mode;
+    gStartIdx = 0;
+}
+
+function getGalleryMode() {
+    return gGalleryMode;
+}
+
 function setCurrentPage(movePageIdx) {
+    let activeGalleryArr = (gGalleryMode === GALLERY_MODE) ? gImgs : gMyMemes;
+
     gStartIdx += PAGE_SIZE * movePageIdx;
-    if (gStartIdx >= gImgs.length) gStartIdx = 0;
+    if (gStartIdx >= activeGalleryArr.length) gStartIdx = 0;
     else if (gStartIdx < 0) {
-        gStartIdx = ((gImgs.length - PAGE_SIZE) % PAGE_SIZE === 0) ? gImgs.length - PAGE_SIZE :
-            gImgs.length - (gImgs.length - PAGE_SIZE) % PAGE_SIZE;
+        if (activeGalleryArr.length <= PAGE_SIZE) gStartIdx = 0;
+        else {
+            gStartIdx = ((activeGalleryArr.length - PAGE_SIZE) % PAGE_SIZE === 0) ? activeGalleryArr.length - PAGE_SIZE :
+                activeGalleryArr.length - (activeGalleryArr.length - PAGE_SIZE) % PAGE_SIZE;
+        }
     }
 }
