@@ -4,6 +4,7 @@ const SIZE_TYPE = 'SIZE';
 const ALIGN_TYPE = 'ALIGN'
 const COLOR_TYPE = 'COLOR';
 const COLOR_FRAME_TYPE = 'COLOR_FRAME';
+const FONT_TYPE = 'FONT';
 const POS_TYPE = 'POS';
 const SIZE_CHANGE_FACTOR = 5;
 
@@ -15,25 +16,39 @@ var gIsImg = false;
 function init() {
     gCanvas = document.getElementById('meme-canvas');
     gCtx = gCanvas.getContext('2d');
-    renderGallery();
     resetMeme();
+    getMyMemesFromStorage();
+    renderGallery();
 }
 
-function toggleEditor() {
+function toggleEditor(isMoveToEditor,elActive) {
     const memeEditor = document.querySelector('.meme-container');
     const gallery = document.querySelector('.gallery');
     const about = document.querySelector('.about');
-    const galBtn = document.querySelector('#gallery-btn');
+ 
+    if (isMoveToEditor) {
+        memeEditor.classList.add('flex-row');
+        memeEditor.classList.add('space-between');
+        memeEditor.classList.remove('hidden');
+        gallery.classList.add('hidden');
+        about.classList.remove('flex-row');
+        about.classList.remove('justify-center');
+        about.classList.remove('align-center');
+        about.classList.add('hidden');
+        
+    } else{
+        memeEditor.classList.remove('flex-row');
+        memeEditor.classList.remove('space-between');
+        memeEditor.classList.add('hidden');
+        gallery.classList.remove('hidden');
+        about.classList.add('flex-row');
+        about.classList.add('justify-center');
+        about.classList.add('align-center');
+        about.classList.remove('hidden');
 
-    memeEditor.classList.toggle('flex-row');
-    memeEditor.classList.toggle('space-between');
-    memeEditor.classList.toggle('hidden');
-    gallery.classList.toggle('hidden');
-    about.classList.toggle('hidden');
-    about.classList.toggle('flex-row');
-    about.classList.toggle('justify-center');
-    about.classList.toggle('align-center');
-    galBtn.classList.toggle('no-click');
+        if(elActive.getAttribute("id") === 'gallery-btn') renderGallery();
+        else if (elActive.getAttribute("id") === 'memes-btn') renderMyMemes();
+    }
 }
 
 function openMenu() {
@@ -51,7 +66,7 @@ function onSelectImge(imgId = 2) {
     setSelectrdImg(imgId);
     gIsImg = false;
     drawSelectedImage();
-    toggleEditor();
+    toggleEditor(true,null);
 }
 
 function drawSelectedImage() {
@@ -141,6 +156,13 @@ function onUpdateLineFrameColor(color) {
     drawCanvas();
 }
 
+function onUpdateFont(font) {
+    if (!getMeme().isSelectedLine) return;
+    drawSelectedImage();
+    updateLine(font, FONT_TYPE);
+    drawCanvas();
+}
+
 function onUpdateLinePos(posChange) {
     if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
@@ -179,7 +201,7 @@ function isOutOfCanvasWidth() {
 
 function getLineFontHeight() {
     const currLine = getSelectedLine();
-    let fontOfLine = currLine.size + 'pt' + ' impact';
+    let fontOfLine = currLine.size + 'pt' + ' ' + currLine.font;
     return parseInt(fontOfLine);
 }
 
@@ -206,7 +228,7 @@ function drawCanvas() {
             gCtx.strokeStyle = line.frameColor;
             gCtx.fillStyle = line.color;
         }
-        gCtx.font = line.size + 'px' + ' impact';
+        gCtx.font = line.size + 'px' + ' ' + line.font;
         gCtx.textAlign = line.align;
         gCtx.fillText(line.txt, line.pos.x, line.pos.y);
         gCtx.strokeText(line.txt, line.pos.x, line.pos.y);
@@ -222,23 +244,42 @@ function clearCanvas() {
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
 }
 
+function openColorPicker(itemId) {
+    const iconAndInput = document.querySelectorAll('#' + itemId);
+    iconAndInput.forEach(item => {
+        item.classList.toggle('hidden');
+    });
+}
+
 function downloadMeme(elLink) {
     const data = gCanvas.toDataURL();
     elLink.href = data;
     elLink.download = 'my-image.jpg';
 }
 
+function onSaveMeme() {
+    const memeFile = gCanvas.toDataURL();
+    addToMyMemes(memeFile);
+}
+
+
 function onSetCurrPage(changePage) {
     setCurrentPage(changePage);
     renderGallery();
 }
 
-
 function renderGallery() {
     const gallery = getGallery();
-    console.log('gallery:', gallery);
     var htmlImgs = gallery.map(item => {
         return `<img class="gallery-img" src="${item.url}" onclick="onSelectImge(${item.id})"   >`;
+    });
+    document.querySelector('.gallery-container').innerHTML = htmlImgs.join('');
+}
+
+function renderMyMemes() {
+    const myMemes = getMyMemes();
+    var htmlImgs = myMemes.map(item => {
+        return `<img class="gallery-img" src="${item.meme}">`;
     });
     document.querySelector('.gallery-container').innerHTML = htmlImgs.join('');
 }

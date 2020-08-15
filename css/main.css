@@ -83,6 +83,11 @@ i {
     cursor: pointer;
 }
 
+.menu-color{
+    width: 50px;
+    height: 50px;
+}
+
 .menu-btn:active {
     outline: none;
     border: none;
@@ -371,6 +376,12 @@ i {
         height: 40px;
         padding: 3px;
     }
+
+    .menu-color{
+        width: 30px;
+        height: 30px;
+    }
+
     i {
         font-size: 2rem;
     }

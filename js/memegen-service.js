@@ -6,10 +6,14 @@ const DEF_LINE_ALIGN = 'center';
 const DEF_LINE_COLOR = 'white';
 const DEF_LINE_FRAME_COLOR = 'black';
 const DEF_TXT = 'Insert Text Here';
+const DEF_FONT = 'impact';
 const CANVSA_WIDTH = 500;
 const PAGE_SIZE = 9;
+const MY_MEMES_KEY = 'MY_MEMES';
+
 var gStartIdx = 0;
 var gMeme;
+var gMyMemes;
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 
 var gImgs = [
@@ -48,11 +52,13 @@ function resetMeme() {
                 size: DEF_LINE_SIZE,
                 align: DEF_LINE_ALIGN,
                 color: DEF_LINE_COLOR,
-                frameColor: DEF_LINE_FRAME_COLOR
+                frameColor: DEF_LINE_FRAME_COLOR,
+                font: DEF_FONT
             }
         ]
     }
 }
+
 
 function setSelectrdImg(imgId) {
     let imgToSet = gImgs.find(img => { return img.id === imgId });
@@ -69,7 +75,8 @@ function addLine(y) {
             size: DEF_LINE_SIZE,
             align: DEF_LINE_ALIGN,
             color: DEF_LINE_COLOR,
-            frameColor: DEF_LINE_FRAME_COLOR
+            frameColor: DEF_LINE_FRAME_COLOR,
+            font: DEF_FONT
         }
     } else {
         line = _addDefaultLine()
@@ -85,7 +92,8 @@ function _addDefaultLine() {
         size: DEF_LINE_SIZE,
         align: DEF_LINE_ALIGN,
         color: DEF_LINE_COLOR,
-        frameColor: DEF_LINE_FRAME_COLOR
+        frameColor: DEF_LINE_FRAME_COLOR,
+        font: DEF_FONT
     }
 }
 
@@ -106,6 +114,9 @@ function updateLine(data, type) {
             break;
         case COLOR_FRAME_TYPE:
             updateLine.frameColor = data;
+            break;
+        case FONT_TYPE:
+            updateLine.font = data;
             break;
         case POS_TYPE:
             updateLine.pos.y = updateLine.pos.y + updateLine.size * data;
@@ -172,6 +183,24 @@ function getDefVals() {
         color: DEF_LINE_COLOR,
         txt: DEF_TXT
     }
+}
+
+function addToMyMemes(memeFile) {
+    const meme = {
+        id: makeId(),
+        meme: memeFile
+    }
+    gMyMemes.push(meme);
+    saveToStorage(MY_MEMES_KEY, gMyMemes);
+}
+
+function getMyMemesFromStorage() {
+    gMyMemes = loadFromStorage(MY_MEMES_KEY);
+    if (!gMyMemes) gMyMemes = [];
+}
+
+function getMyMemes() {
+    return gMyMemes.slice(gStartIdx, gStartIdx + PAGE_SIZE);
 }
 
 // ----------- GALLERY FUNCTIONS --------------------
