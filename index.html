@@ -15,8 +15,9 @@
     <header class="flex-row space-between">
         <div class="logo"><img src="img/logo.png"></div>
         <nav class="nav-bar flex-row space-between">
-            <button class="nav-item gallery-btn" id="gallery-btn" onclick="onChangePageLayout(false,this)"  >Gallery</button>
-            <button class="nav-item memes-btn" id="memes-btn" onclick="onChangePageLayout(false,this)" >Memes</button>
+            <button class="nav-item gallery-btn" id="gallery-btn"
+                onclick="onChangePageLayout(false,this)">Gallery</button>
+            <button class="nav-item memes-btn" id="memes-btn" onclick="onChangePageLayout(false,this)">Memes</button>
             <button class="nav-item about-btn" onclick="sctollToAbout()">About</button>
         </nav>
         <div class="hamburger hidden" onclick="openMenu()">
@@ -72,12 +73,12 @@
                         <option value="Comic Sans MS, cursive, sans-serif">Comic Sans MS</option>
                         <option value="Lucida Console, Monaco, monospace">Lucida Console</option>
                     </select>
-                        <input id="frame-color" class="menu-color hidden" type="color" name="frame-color"
-                        onclick="openColorPicker(this.id)" onchange="onUpdateLineFrameColor(this.value)">
-                        <i id="frame-color" class="fas fa-edit" onclick="openColorPicker(this.id)"></i>
-                        <input id="txt-color" class="menu-color hidden" type="color" name=" txt-color"
-                        onclick="openColorPicker(this.id)" onchange="onUpdateLineColor(this.value)">
-                        <i id="txt-color" class="fas fa-palette" onclick="openColorPicker(this.id)"></i>
+                    <input id="frame-color" class="menu-color hidden" type="color" name="frame-color"
+                        onchange="onUpdateLineFrameColor(this.value,this.id)">
+                    <i id="frame-color" class="fas fa-edit" onclick="openColorPicker(this.id)"></i>
+                    <input id="txt-color" class="menu-color hidden" type="color" name=" txt-color"
+                        onchange="onUpdateLineColor(this.value,this.id)">
+                    <i id="txt-color" class="fas fa-palette" onclick="openColorPicker(this.id)"></i>
                 </div>
                 <div class="act-btn-container flex-row space-between">
                     <button class="act-btn save" onclick="onSaveMeme()">SAVE</button>

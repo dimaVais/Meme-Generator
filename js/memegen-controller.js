@@ -153,18 +153,21 @@ function onUpdateLineAlign(align) {
     }
 }
 
-function onUpdateLineColor(color) {
+function onUpdateLineColor(color, colorPicker) {
     if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     updateLine(color, COLOR_TYPE);
     drawCanvas();
+    toggleColorPicker(colorPicker);
 }
 
-function onUpdateLineFrameColor(color) {
+function onUpdateLineFrameColor(color, colorPicker) {
     if (!getMeme().isSelectedLine) return;
     drawSelectedImage();
     updateLine(color, COLOR_FRAME_TYPE);
     drawCanvas();
+    toggleColorPicker(colorPicker);
+
 }
 
 function onUpdateFont(font) {
@@ -255,7 +258,7 @@ function clearCanvas() {
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
 }
 
-function openColorPicker(itemId) {
+function toggleColorPicker(itemId) {
     const iconAndInput = document.querySelectorAll('#' + itemId);
     iconAndInput.forEach(item => {
         item.classList.toggle('hidden');
