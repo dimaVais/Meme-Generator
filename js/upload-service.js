@@ -3,9 +3,15 @@
 //Gets data for upload from the meme-controller
 function uploadImg(isCanvas, memeImg, elForm, ev) {
     ev.preventDefault();
-    if(isCanvas) document.getElementById('imgData').value = memeImg;
-    else document.getElementById('imgDataIcon').value = memeImg;
+    if(isCanvas) {
+        document.getElementById('imgData').value = memeImg;
+        console.log('aaa');
+    }
+    else {
+        document.getElementById('imgDataIcon').value = memeImg;
+        console.log('bbb');
 
+    }
     doUploadImg(elForm, onSuccess);
 
     //Share the image on facebook in case of success
@@ -15,10 +21,10 @@ function uploadImg(isCanvas, memeImg, elForm, ev) {
     }
 }
 
-//Make the htpp request
+//Make the http request
 function doUploadImg(elForm, onSuccess) {
     var formData = new FormData(elForm);
-    fetch('http://ca-upload.com/here/upload.php', {
+    fetch('https://ca-upload.com/here/upload.php', {
         method: 'POST',
         body: formData
     })

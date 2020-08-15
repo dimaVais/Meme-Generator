@@ -252,16 +252,17 @@ function toggleColorPicker(itemId) {
 
 // Share on facebook of both canvas and saved memes
 function onShareImgFacebook(imgSource, elForm, ev) {
-    console.log(imgSource);
     if (imgSource === 'CANVAS') {
         var memeImg = gCanvas.toDataURL('image/jpeg');
         var isCanvas = true;
     } else {
         var image = new Image();
         image.src = imgSource;
+        document.querySelector('.gallery-container').innerHTML = image;
         gCtx.drawImage(image, 0, 0, gCanvas.width, gCanvas.height);
         memeImg = gCanvas.toDataURL('image/jpeg');
         clearCanvas();
+        console.log(memeImg);
         // memeImg = imgSource;
         isCanvas = false;
     }

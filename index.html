@@ -73,19 +73,23 @@
                         <option value="Comic Sans MS, cursive, sans-serif">Comic Sans MS</option>
                         <option value="Lucida Console, Monaco, monospace">Lucida Console</option>
                     </select>
+
                     <input id="frame-color" class="menu-color hidden" type="color" name="frame-color"
                         onchange="onUpdateLineFrameColor(this.value,this.id)">
                     <i id="frame-color" class="fas fa-edit" onclick="toggleColorPicker(this.id)"></i>
+
                     <input id="txt-color" class="menu-color hidden" type="color" name=" txt-color"
                         onchange="onUpdateLineColor(this.value,this.id)">
                     <i id="txt-color" class="fas fa-palette" onclick="toggleColorPicker(this.id)"></i>
                 </div>
                 <div class="act-btn-container flex-row space-between">
                     <button class="act-btn save" onclick="onSaveMeme()">SAVE</button>
+
                     <form action="" method="POST" enctype="multipart/form-data" onsubmit="onShareImgFacebook('CANVAS',this,event)">
-                        <button type="submit" class="act-btn share" onclick=>SHARE</button>
+                        <button type="submit" class="act-btn share">SHARE</button>
                         <input name="img" id="imgData" type="hidden" />
                     </form>
+
                     <button class="act-btn download">
                         <a onclick="onDownloadMeme(this)" download="">DOWNLOAD</a>
                     </button>
