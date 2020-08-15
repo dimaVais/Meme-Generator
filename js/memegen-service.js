@@ -100,6 +100,12 @@ function directUpdateLinePosX(newPosX, txtWidth) {
 function removeSelectedLine() {
     let deletedIdx = gMeme.selectedLineIdx;
     gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+    var startId = 0;
+    gMeme.lines.forEach((line,idx)=>{
+        gMeme.lines[idx].id = startId;
+        startId++;
+    });
+
     gMeme.selectedLineIdx = (deletedIdx - 1 >= 0) ? deletedIdx - 1 : 0;
 }
 

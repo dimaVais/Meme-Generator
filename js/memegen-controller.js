@@ -1,4 +1,5 @@
 'use strict';
+
 const TXT_TYPE = 'TEXT';
 const SIZE_TYPE = 'SIZE';
 const ALIGN_TYPE = 'ALIGN'
@@ -10,7 +11,7 @@ const SIZE_CHANGE_FACTOR = 5;
 
 var gCanvas;
 var gCtx;
-var gIsImg=false;
+var gIsImg = false;
 
 
 // Init the meme-generator
@@ -29,22 +30,25 @@ function drawCanvas() {
     clearCanvas();
     drawSelectedImage();
     const meme = getMeme()
-    meme.lines.forEach(line => {
-        gCtx.lineWidth = '2';
+    meme.lines.forEach(line => {    
         if (meme.selectedLineIdx === line.id) {
             gCtx.strokeStyle = 'blue';
             gCtx.fillStyle = line.color;
+            gCtx.lineWidth = '3';
+            gCtx.font ='900'+' '+ line.size + 'px' + ' ' + line.font;
             setInputLineText();
         } else {
             gCtx.strokeStyle = line.frameColor;
-            gCtx.fillStyle = line.color;
+            gCtx.fillStyle = line.color
+            gCtx.lineWidth = '2';
+            gCtx.font = line.size + 'px' + ' ' + line.font;
         }
-        gCtx.font = line.size + 'px' + ' ' + line.font;
         gCtx.textAlign = line.align;
         gCtx.fillText(line.txt, line.pos.x, line.pos.y);
         gCtx.strokeText(line.txt, line.pos.x, line.pos.y);
     });
 }
+
 
 //Cleare Canvas
 function clearCanvas() {
@@ -258,12 +262,9 @@ function onShareImgFacebook(imgSource, elForm, ev) {
     } else {
         var image = new Image();
         image.src = imgSource;
-        document.querySelector('.gallery-container').innerHTML = image;
         gCtx.drawImage(image, 0, 0, gCanvas.width, gCanvas.height);
         memeImg = gCanvas.toDataURL('image/jpeg');
         clearCanvas();
-        console.log(memeImg);
-        // memeImg = imgSource;
         isCanvas = false;
     }
     uploadImg(isCanvas, memeImg, elForm, ev);

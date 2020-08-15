@@ -5,12 +5,9 @@ function uploadImg(isCanvas, memeImg, elForm, ev) {
     ev.preventDefault();
     if(isCanvas) {
         document.getElementById('imgData').value = memeImg;
-        console.log('aaa');
     }
     else {
         document.getElementById('imgDataIcon').value = memeImg;
-        console.log('bbb');
-
     }
     doUploadImg(elForm, onSuccess);
 

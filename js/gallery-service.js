@@ -1,4 +1,3 @@
-
 'use strict';
 
 const PAGE_SIZE = 9;
@@ -8,7 +7,7 @@ var gStartIdx = 0;
 var gMyMemes;
 var gGalleryMode;
 
-var gKeywords = { 'happy': 12, 'funny puk': 1 } //Not in tse for now
+var gKeywords = { 'happy': 12, 'funny puk': 1 } //Not in use for now
 
 //Gallery array of images
 var gImgs = [
