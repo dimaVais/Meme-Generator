@@ -1,6 +1,5 @@
 'use strict';
 
-// var gIds = gImgs.length;
 const DEF_LINE_SIZE = 60;
 const DEF_LINE_ALIGN = 'center';
 const DEF_LINE_COLOR = 'white';
@@ -8,39 +7,10 @@ const DEF_LINE_FRAME_COLOR = 'black';
 const DEF_TXT = 'Insert Text Here';
 const DEF_FONT = 'impact';
 const CANVSA_WIDTH = 500;
-const PAGE_SIZE = 9;
-const MY_MEMES_KEY = 'MY_MEMES';
 
-var gStartIdx = 0;
 var gMeme;
-var gMyMemes;
-var gGalleryMode;
 
-var gKeywords = { 'happy': 12, 'funny puk': 1 }
-
-var gImgs = [
-    { id: 1, url: 'img/1.jpg', keywords: ['happy'] },
-    { id: 2, url: 'img/2.jpg', keywords: ['happy'] },
-    { id: 3, url: 'img/3.jpg', keywords: ['happy'] },
-    { id: 4, url: 'img/4.jpg', keywords: ['happy'] },
-    { id: 5, url: 'img/5.jpg', keywords: ['happy'] },
-    { id: 6, url: 'img/6.jpg', keywords: ['happy'] },
-    { id: 7, url: 'img/7.jpg', keywords: ['happy'] },
-    { id: 8, url: 'img/8.jpg', keywords: ['happy'] },
-    { id: 9, url: 'img/9.jpg', keywords: ['happy'] },
-    { id: 10, url: 'img/10.jpg', keywords: ['happy'] },
-    { id: 11, url: 'img/11.jpg', keywords: ['happy'] },
-    { id: 12, url: 'img/12.jpg', keywords: ['happy'] },
-    { id: 13, url: 'img/13.jpg', keywords: ['happy'] },
-    { id: 14, url: 'img/14.jpg', keywords: ['happy'] },
-    { id: 15, url: 'img/15.jpg', keywords: ['happy'] },
-    { id: 16, url: 'img/16.jpg', keywords: ['happy'] },
-    { id: 17, url: 'img/17.jpg', keywords: ['happy'] },
-    { id: 18, url: 'img/18.jpg', keywords: ['happy'] }
-];
-
-
-
+//Reset meme object to default values
 function resetMeme() {
     gMeme = {
         selectedImgId: 5,
@@ -61,12 +31,13 @@ function resetMeme() {
     }
 }
 
-
+//Set selected img in meme object
 function setSelectrdImg(imgId) {
     let imgToSet = gImgs.find(img => { return img.id === imgId });
     gMeme.selectedImgId = imgToSet.id;
 }
 
+//Add line to the meme
 function addLine(y) {
     var line =
     {
@@ -82,6 +53,7 @@ function addLine(y) {
     gMeme.lines.push(line);
 }
 
+//Update all parameters in sellected meme line
 function updateLine(data, type) {
     let updateLine = gMeme.lines[gMeme.selectedLineIdx];
     switch (type) {
@@ -109,12 +81,14 @@ function updateLine(data, type) {
     }
 }
 
+//Fix update in case position y is out of canvas
 function directUpdateLinePosY(newPosY, fontHeight) {
     let updateLine = gMeme.lines[gMeme.selectedLineIdx];
     if (newPosY === 0) updateLine.pos.y = newPosY + fontHeight;
     else updateLine.pos.y = newPosY;
 }
 
+//Fix update in case position x is out of canvas
 function directUpdateLinePosX(newPosX, txtWidth) {
     let updateLine = gMeme.lines[gMeme.selectedLineIdx];
     if (newPosX === 0) updateLine.pos.x = newPosX + txtWidth;
@@ -122,22 +96,25 @@ function directUpdateLinePosX(newPosX, txtWidth) {
     else updateLine.pos.x = CANVSA_WIDTH / 2;
 }
 
+//Remove selected line from meme
 function removeSelectedLine() {
     let deletedIdx = gMeme.selectedLineIdx;
     gMeme.lines.splice(gMeme.selectedLineIdx, 1);
     gMeme.selectedLineIdx = (deletedIdx - 1 >= 0) ? deletedIdx - 1 : 0;
 }
 
+//Get meme selected image
 function getSelectedImg() {
     return gImgs.find(img => { return img.id === gMeme.selectedImgId });
 }
 
+//Get line by its id
 function getLineByIdx(idx = 0) {
     return gMeme.lines[idx];
 }
 
+//Select lines one by another according they order in the meme object
 function setSelectNextLine() {
-
     if (gMeme.selectedLineIdx < gMeme.lines.length && gMeme.lines.length > 0) {
         ++gMeme.selectedLineIdx;
         if (gMeme.selectedLineIdx >= gMeme.lines.length) {
@@ -149,78 +126,27 @@ function setSelectNextLine() {
     }
 }
 
+//Set the selected line
 function setSelectedLinebyIdx(idx = 0) {
     gMeme.selectedLineIdx = idx;
 }
 
+//Get currently selected line
 function getSelectedLine() {
     return gMeme.lines[gMeme.selectedLineIdx];
 }
 
+//Get meme object
 function getMeme() {
     return gMeme
 }
 
+//Get line default values
 function getDefVals() {
     return {
         lineSize: DEF_LINE_SIZE,
         align: DEF_LINE_ALIGN,
         color: DEF_LINE_COLOR,
         txt: DEF_TXT
-    }
-}
-
-// ----------- MEMES GALLERY FUNCTIONS --------------------
-
-
-function addToMyMemes(memeFile) {
-    const meme = {
-        id: makeId(),
-        meme: memeFile
-    }
-    gMyMemes.push(meme);
-    saveToStorage(MY_MEMES_KEY, gMyMemes);
-}
-
-function removeMeme(memeId) {
-    const memeIdxToRemove = gMyMemes.findIndex(meme => meme.id === memeId);
-    gMyMemes.splice(memeIdxToRemove, 1);
-    saveToStorage(MY_MEMES_KEY, gMyMemes);
-}
-
-function getMyMemesFromStorage() {
-    gMyMemes = loadFromStorage(MY_MEMES_KEY);
-    if (!gMyMemes) gMyMemes = [];
-}
-
-function getMyMemes() {
-    return gMyMemes.slice(gStartIdx, gStartIdx + PAGE_SIZE);
-}
-
-// ----------- GALLERY FUNCTIONS --------------------
-function getGallery() {
-    return gImgs.slice(gStartIdx, gStartIdx + PAGE_SIZE);
-}
-
-function setGalleryMode(mode) {
-    gGalleryMode = mode;
-    gStartIdx = 0;
-}
-
-function getGalleryMode() {
-    return gGalleryMode;
-}
-
-function setCurrentPage(movePageIdx) {
-    let activeGalleryArr = (gGalleryMode === GALLERY_MODE) ? gImgs : gMyMemes;
-
-    gStartIdx += PAGE_SIZE * movePageIdx;
-    if (gStartIdx >= activeGalleryArr.length) gStartIdx = 0;
-    else if (gStartIdx < 0) {
-        if (activeGalleryArr.length <= PAGE_SIZE) gStartIdx = 0;
-        else {
-            gStartIdx = ((activeGalleryArr.length - PAGE_SIZE) % PAGE_SIZE === 0) ? activeGalleryArr.length - PAGE_SIZE :
-                activeGalleryArr.length - (activeGalleryArr.length - PAGE_SIZE) % PAGE_SIZE;
-        }
     }
 }
