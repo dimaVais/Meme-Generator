@@ -1,17 +1,10 @@
 'use strict';
 
-const TXT_TYPE = 'TEXT';
-const SIZE_TYPE = 'SIZE';
-const ALIGN_TYPE = 'ALIGN'
-const COLOR_TYPE = 'COLOR';
-const COLOR_FRAME_TYPE = 'COLOR_FRAME';
-const FONT_TYPE = 'FONT';
-const POS_TYPE = 'POS';
-const SIZE_CHANGE_FACTOR = 5;
-
 var gCanvas;
 var gCtx;
 var gIsImg = false;
+var gIsMouseDown;
+var gIsMobile;
 
 
 // Init the meme-generator
@@ -22,6 +15,10 @@ function init() {
     getMyMemesFromStorage();
     renderGallery();
     setGalleryMode(GALLERY_MODE);
+    onSelectLineByClick();
+    // onSelectLineByTouch();
+    onDragAndDropMouseEvents();
+    onDragAndDropTouchEvents();
 }
 
 
@@ -30,25 +27,24 @@ function drawCanvas() {
     clearCanvas();
     drawSelectedImage();
     const meme = getMeme()
-    meme.lines.forEach(line => {    
+    meme.lines.forEach(line => {
         if (meme.selectedLineIdx === line.id) {
-            gCtx.strokeStyle = 'blue';
-            gCtx.fillStyle = line.color;
+            gCtx.fillStyle = 'rgba(128, 255, 0, 0.7)';
             gCtx.lineWidth = '3';
-            gCtx.font ='900'+' '+ line.size + 'px' + ' ' + line.font;
+            gCtx.rect(0, line.pos.y + 5, CANVSA_WIDTH, - getSelectedLineFontHeight());
+            gCtx.fill();
             setInputLineText();
-        } else {
-            gCtx.strokeStyle = line.frameColor;
-            gCtx.fillStyle = line.color
-            gCtx.lineWidth = '2';
-            gCtx.font = line.size + 'px' + ' ' + line.font;
         }
+        gCtx.beginPath();
+        gCtx.strokeStyle = line.frameColor;
+        gCtx.fillStyle = line.color
+        gCtx.lineWidth = '2';
+        gCtx.font = line.size + 'px' + ' ' + line.font;
         gCtx.textAlign = line.align;
         gCtx.fillText(line.txt, line.pos.x, line.pos.y);
         gCtx.strokeText(line.txt, line.pos.x, line.pos.y);
     });
 }
-
 
 //Cleare Canvas
 function clearCanvas() {
@@ -63,7 +59,6 @@ function onSelectImge(imgId = 2) {
     drawSelectedImage();
     onChangePageLayout(true, null);
 }
-
 
 //Set selected image data to be drawn on canvas
 function drawSelectedImage() {
@@ -81,23 +76,133 @@ function drawSelectedImage() {
     }
 }
 
-//Add new text line to the canvas
-function onAddLine() {
-    let meme = getMeme();
-    let len = meme.lines.length;
-    if (len === 0) var posY = getDefVals().lineSize;
-    else if (len === 1) posY = gCanvas.height - getDefVals().lineSize;
-    else if (len === 2) posY = gCanvas.height / 2;
-    else if (len === 3) posY = gCanvas.height / 3;
-    else if (len === 4) posY = gCanvas.height * (2 / 3);
-    else posY = gCanvas.height;
 
-    addLine(posY);
-    setSelectedLinebyIdx(len);
+// ********* Drag & Drop and On Canvas click functions ********* //
+
+// Select/Unselect Line by clicking on the canvas
+function onSelectLineByClick() {
+    gCanvas.addEventListener("click", ev => {
+        let lines = getMeme().lines;
+        lines.forEach((line, idx) => {
+            if (ev.offsetY < line.pos.y && ev.offsetY > line.pos.y - getLineFontHight(line)) {
+                if (!getMeme().isSelectedLine || getSelectedLine().id !== line.id) setSelectedLinebyIdx(idx);
+                else setUnSelectLines();
+                drawCanvas();
+            };
+        });
+    });
+}
+
+// Select/Unselect Line by touching on the canvas
+function onSelectLineByTouch() {
+    gCanvas.addEventListener("touchstart", ev => {
+        ev.preventDefault();
+        let lines = getMeme().lines;
+        lines.forEach((line, idx) => {
+            if (ev.touches[0].clientY < line.pos.y + 100 && ev.touches[0].clientY > line.pos.y - 100 - getLineFontHight(line)) {
+                if (!getMeme().isSelectedLine || getSelectedLine().id !== line.id) setSelectedLinebyIdx(idx);
+                else setUnSelectLines();
+                drawCanvas();
+            };
+        });
+    });
+}
+
+// Defines Drag&Drop event listeners for the mouse
+function onDragAndDropMouseEvents() {
+    const canvas = document.querySelector('#meme-canvas');
+    gCanvas.addEventListener("mousedown", ev => {
+        let lines = getMeme().lines;
+        lines.forEach((line) => {
+            if (ev.offsetY < line.pos.y && ev.offsetY > line.pos.y - getLineFontHight(line) &&
+                ev.offsetX > findTextX(line).start && ev.offsetX < findTextX(line).end &&
+                getSelectedLine().id === line.id) {
+                if (ev) gIsMouseDown = true;
+                gIsMobile = false;
+                canvas.classList.add('grab');
+            };
+        });
+
+    });
+    gCanvas.addEventListener("mouseup", ev => {
+        if (ev) gIsMouseDown = false;
+        gIsMobile = false;
+        canvas.classList.remove('grab');
+    });
+}
+
+// Defines Drag&Drop event listeners for the touch evenst
+function onDragAndDropTouchEvents() {
+    gCanvas.addEventListener("touchmove", ev => {
+        ev.preventDefault();
+        let lines = getMeme().lines;
+        lines.forEach((line) => {
+            if (ev.touches[0].clientY < line.pos.y + 100 && ev.touches[0].clientY > line.pos.y - 100 - getLineFontHight(line) &&
+                ev.touches[0].clientX > findTextX(line).start && ev.touches[0].clientX < findTextX(line).end &&
+                getSelectedLine().id === line.id) {
+                if (ev) gIsMouseDown = true;
+                gIsMobile = true;
+            };
+        });
+    })
+    gCanvas.addEventListener("touchend", ev => {
+        ev.preventDefault();
+        if (ev) gIsMouseDown = false;
+        gIsMobile = true;
+    })
+}
+
+// Helper function to find the X position of the text according to the align
+function findTextX(line) {
+    let align = line.align;
+    var lineXLimits = {};
+    if (align === 'right') {
+        lineXLimits = { start: 0, end: getTextWidth(line) };
+    } else if (line.align === 'left') {
+        lineXLimits = { start: line.pos.x, end: CANVSA_WIDTH };
+    } else {
+        lineXLimits = { start: CANVSA_WIDTH / 2 - getTextWidth(line) / 2, end: CANVSA_WIDTH / 2 + getTextWidth(line) / 2 };
+    }
+    return lineXLimits;
+}
+
+// Drag & Drop function for mouse/touch move on canvas
+function onDragAndDrop(ev) {
+    if (!gIsMouseDown) return;
+    let pos = { locX: 0, locY: 0 }
+    if (gIsMobile) {
+        pos.locX = ev.touches[0].clientX;
+        pos.locY = ev.touches[0].clientY;
+    } else {
+        pos.locX = ev.offsetX;
+        pos.locY = ev.offsetY;
+    }
+    updateLine(pos.locX, POS_TYPE_X);
+    directUpdateLinePosY(pos.locY, getSelectedLineFontHeight());
     drawCanvas();
 }
 
-//Select line on the canvas cor edit
+
+
+// ********* Buttons Controllers functions ********* //
+
+//Add new text line to the canvas
+function onAddLine() {
+    let meme = getMeme();
+    let memeLength = meme.lines.length; //memeLength
+    if (!memeLength) var posY = getDefVals().lineSize; //if (!len)
+    else if (memeLength === 1) posY = gCanvas.height - getDefVals().lineSize;
+    else if (memeLength === 2) posY = gCanvas.height / 2;
+    else if (memeLength === 3) posY = gCanvas.height / 3;
+    else if (memeLength === 4) posY = gCanvas.height * (2 / 3);
+    else posY = gCanvas.height;
+
+    addLine(posY);
+    setSelectedLinebyIdx(memeLength);
+    drawCanvas();
+}
+
+//Select line on the canvas by their order
 function onSelectLine() {
     setSelectNextLine();
     drawCanvas();
@@ -109,16 +214,14 @@ function setInputLineText() {
     document.querySelector('.line').value = currLine.txt;
 }
 
-
 // ----- Selected line Line Update functions ------//
 
 //Update text
 function onUpdateLineText(text) {
     if (!getMeme().isSelectedLine) return;
-    drawSelectedImage();
-    if (getLineTextWidth() + geTextWidth(text) > gCanvas.width) {
+    if (getSelectedLineFontWidth() + getTextWidth(text) > gCanvas.width) {
         let currLine = getSelectedLine();
-        directUpdateLinePosY(currLine.pos.y, getLineFontHeight)
+        directUpdateLinePosY(currLine.pos.y, getSelectedLineFontHeight)
     }
     updateLine(text, TXT_TYPE);
     drawCanvas();
@@ -127,9 +230,8 @@ function onUpdateLineText(text) {
 //Update size
 function onUpdateLineSize(sizeChange) {
     if (!getMeme().isSelectedLine) return;
-    drawSelectedImage();
-    if (isFontOutOfCanvasHieght(sizeChange) || sizeChange < 0) {
-        updateLine(SIZE_CHANGE_FACTOR * sizeChange, SIZE_TYPE);
+    if (checkIfFontOutOfCanvasHieght(sizeChange) || sizeChange < 0) {
+        updateLine(SIZE_CHANGE * sizeChange, SIZE_TYPE);
     }
     drawCanvas();
 }
@@ -137,27 +239,27 @@ function onUpdateLineSize(sizeChange) {
 //Update aligmnet
 function onUpdateLineAlign(align) {
     if (!getMeme().isSelectedLine) return;
-    drawSelectedImage();
+    let newXPos = onUpdateLinePosOnAlign(align);
     updateLine(align, ALIGN_TYPE);
-    if (isOutOfCanvasWidth()) {
-        drawCanvas();
+    updateLine(newXPos, POS_TYPE_X);
+    drawCanvas();
+}
+
+// Helper func that calculates the chnage in position x after the align
+function onUpdateLinePosOnAlign(align) {
+    if (align === 'right') {
+        var newPos = getSelectedLineFontWidth();
+    } else if (align === 'left') {
+        newPos = CANVSA_WIDTH - getSelectedLineFontWidth();
     } else {
-        if (align === 'right') {
-            var borderX = 0;
-        } else if (align === 'left') {
-            borderX = gCanvas.width;
-        } else {
-            borderX = gCanvas.width / 2
-        }
-        directUpdateLinePosX(borderX, getLineTextWidth());
-        drawCanvas();
+        newPos = CANVSA_WIDTH / 2;
     }
+    return newPos;
 }
 
 //update line fill color
 function onUpdateLineColor(color, colorPicker) {
     if (!getMeme().isSelectedLine) return;
-    drawSelectedImage();
     updateLine(color, COLOR_TYPE);
     drawCanvas();
     toggleColorPicker(colorPicker);
@@ -166,7 +268,6 @@ function onUpdateLineColor(color, colorPicker) {
 //update line frame color
 function onUpdateLineFrameColor(color, colorPicker) {
     if (!getMeme().isSelectedLine) return;
-    drawSelectedImage();
     updateLine(color, COLOR_FRAME_TYPE);
     drawCanvas();
     toggleColorPicker(colorPicker);
@@ -175,20 +276,18 @@ function onUpdateLineFrameColor(color, colorPicker) {
 //Update line font
 function onUpdateFont(font) {
     if (!getMeme().isSelectedLine) return;
-    drawSelectedImage();
     updateLine(font, FONT_TYPE);
     drawCanvas();
 }
 
-//Update line position on x and y axices 
-function onUpdateLinePos(posChange) {
+//Update line position on x and y axises 
+function onUpdateLinePosY(posChange) {
     if (!getMeme().isSelectedLine) return;
-    drawSelectedImage();
-    if (isMoveOutOfCanvasHieght(posChange)) {
-        updateLine(posChange, POS_TYPE);
+    if (checkIfMoveOutOfCanvasHieght(posChange)) {
+        updateLine(posChange, POS_TYPE_Y);
     } else {
         let borderY = (posChange < 0) ? 0 : gCanvas.height;
-        directUpdateLinePosY(borderY, getLineFontHeight());
+        directUpdateLinePosY(borderY, getSelectedLineFontHeight());
     }
     drawCanvas();
 }
@@ -205,49 +304,51 @@ function onRemoveLine() {
 // ----- Check canvas borders ------//
 
 //Check is text moved out of canvas height
-function isMoveOutOfCanvasHieght(posChange) {
+function checkIfMoveOutOfCanvasHieght(posChange) { //checkIfMoveOut...()
     const currLine = getSelectedLine();
-    if (currLine.pos.y + currLine.size * posChange < 0 + currLine.size || currLine.pos.y + currLine.size * posChange > gCanvas.height) return false;
-    else return true;
+    return !(currLine.pos.y + (currLine.size * posChange) < POS_CHANGE || currLine.pos.y + (POS_CHANGE * posChange) > gCanvas.height);
 }
 
 //Check is font size increase move it out of canvas height
-function isFontOutOfCanvasHieght(sizeChange) {
+function checkIfFontOutOfCanvasHieght(sizeChange) {
     const currLine = getSelectedLine();
-    if (currLine.pos.y + SIZE_CHANGE_FACTOR * sizeChange < 0 + currLine.size) return false;
-    else return true;
+    return !(currLine.pos.y + SIZE_CHANGE * sizeChange < 0 + currLine.size);
 }
 
 //Check is text moved out of canvas width
-function isOutOfCanvasWidth() {
+function checkIfOutOfCanvasWidth() {
     const currLine = getSelectedLine();
     const txtxWidth = gCtx.measureText(currLine.txt).width;
-    if (currLine.pos.x - txtxWidth < 0 || currLine.pos.x + txtxWidth > gCanvas.width) return false;
-    else return true;
+    return !(currLine.pos.x - txtxWidth < 0 || currLine.pos.x + txtxWidth > gCanvas.width);
 }
 
 // ----- Check Text borders functions ------//
 
 // Get font height of the line
-function getLineFontHeight() {
+function getSelectedLineFontHeight() {
     const currLine = getSelectedLine();
     let fontOfLine = currLine.size + 'pt' + ' ' + currLine.font;
     return parseInt(fontOfLine);
 }
 
 // Get font width of the line
-function getLineTextWidth() {
+function getSelectedLineFontWidth() {
     const currLine = getSelectedLine();
     return gCtx.measureText(currLine.txt).width;
 }
 
 //Get text width
-function geTextWidth(text) {
+function getTextWidth(text) {
     return gCtx.measureText(text).width;
 }
 
+function getLineFontHight(line) {
+    let fontOfLine = line.size + 'pt' + ' ' + line.font;
+    return parseInt(fontOfLine);
+}
+
 // Change vbetween the color picker and tha fas icons
-function toggleColorPicker(itemId) {
+function toggleColorPicker(itemId) { //checkbox hack
     const iconAndInput = document.querySelectorAll('#' + itemId);
     iconAndInput.forEach(item => {
         item.classList.toggle('hidden');

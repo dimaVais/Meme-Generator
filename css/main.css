@@ -33,8 +33,8 @@ main {
 }
 
 footer {
-    margin: 0 auto;
     width: 100%;
+    margin: 0 auto;
     height: 207px;
     background-color: #ff7f00;
 }
@@ -83,14 +83,14 @@ i {
     cursor: pointer;
 }
 
-.menu-color {
-    width: 50px;
-    height: 50px;
-}
-
 .menu-btn:active {
     outline: none;
     border: none;
+}
+
+.menu-color {
+    width: 50px;
+    height: 50px;
 }
 
 .font-select {
@@ -102,13 +102,13 @@ i {
 }
 
 .act-btn {
-    width: 150px;
+    width: 115px;
     height: 60px;
     border-radius: 12px;
     background-color: #ff7f00;
     font-family: Montserrat;
-    font-size: 1.25rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 800;
     text-align: center;
     color: #ffffff;
     cursor: pointer;
@@ -126,11 +126,6 @@ i {
     width: 75px;
     height: 100%;
     font-size: 1.125rem;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
     text-align: center;
     color: #ffffff;
     background-color: transparent;
@@ -156,10 +151,6 @@ i {
     font-family: Montserrat;
     font-size: 1.25rem;
     font-weight: 100;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
     text-align: center;
     color: #ffffff;
 }
@@ -185,14 +176,16 @@ i {
 
 .gallery-img {
     width: 353px;
-    height: 278px;
+    height: 353px;
     justify-self: center;
+    object-fit:contain ;
 }
 
 .meme-img {
     width: 353px;
-    height: 278px;
+    width: 353px;
     justify-self: center;
+    object-fit:contain;
 }
 
 .gallery-img:hover {
@@ -268,10 +261,6 @@ i {
     font-family: Montserrat;
     font-size: 25px;
     font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
     text-align: left;
     color: #000000;
 }
@@ -282,10 +271,6 @@ i {
     font-family: Montserrat;
     font-size: 20px;
     font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
     text-align: left;
     color: #000000;
 }
@@ -340,6 +325,10 @@ i {
 
 .no-click {
     pointer-events: none;
+}
+
+.grab{
+    cursor: grab;
 }
 
 /* flex helpers */

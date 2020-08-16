@@ -36,7 +36,8 @@
         </section>
         <section class="meme-container  hidden">
             <div class="canvas-container">
-                <canvas id="meme-canvas" dir="ltr" height="500" width="500">
+                <canvas id="meme-canvas" dir="ltr" height="500" width="500" onmousemove="onDragAndDrop(event)"
+                    ontouchmove="onDragAndDrop(event)">
             </div>
             <div class="menu-container flex-col space-between">
                 <input type="menu-btn" class="line" placeholder="Insert meme text"
@@ -48,9 +49,9 @@
                     <button class="menu-btn add" onclick="onAddLine()"><i class="fas fa-plus-square"></i></button>
                     <button class="menu-btn remove" onclick="onRemoveLine()"><i class="fas fa-trash-alt"></i></button>
 
-                    <button class="menu-btn line-up" onclick="onUpdateLinePos(-1)"><i
+                    <button class="menu-btn line-up" onclick="onUpdateLinePosY(-1)"><i
                             class="fas fa-arrow-circle-up"></i></button>
-                    <button class="menu-btn line-down" onclick="onUpdateLinePos(1)"><i
+                    <button class="menu-btn line-down" onclick="onUpdateLinePosY(1)"><i
                             class="fas fa-arrow-circle-down"></i></button>
                 </div>
                 <div class="menu-bar flex-row space-between align-menu-container">
@@ -85,7 +86,8 @@
                 <div class="act-btn-container flex-row space-between">
                     <button class="act-btn save" onclick="onSaveMeme()">SAVE</button>
 
-                    <form action="" method="POST" enctype="multipart/form-data" onsubmit="onShareImgFacebook('CANVAS',this,event)">
+                    <form action="" method="POST" enctype="multipart/form-data"
+                        onsubmit="onShareImgFacebook('CANVAS',this,event)">
                         <button type="submit" class="act-btn share">SHARE</button>
                         <input name="img" id="imgData" type="hidden" />
                     </form>
@@ -129,6 +131,7 @@
         </div>
     </footer>
 
+    <script src='js/consts.js'></script>
     <script src='js/utils.js'></script>
     <script src='js/storage-service.js'></script>
     <script src='js/upload-service.js'></script>
@@ -136,7 +139,7 @@
     <script src='js/gallery-service.js'></script>
     <script src='js/gallery-controller.js'></script>
     <script src='js/memegen-controller.js'></script>
-    
+
 
 </body>
 

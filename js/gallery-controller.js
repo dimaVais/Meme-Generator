@@ -1,7 +1,7 @@
 'use strict';
 
-const GALLERY_MODE = 'GALERY';
-const MEMES_MODE = 'MEMES';
+// const GALLERY_MODE = 'GALERY';
+// const MEMES_MODE = 'MEMES';
 
 
 // Change the different sections on the page app
@@ -12,7 +12,7 @@ function onChangePageLayout(isMoveToEditor, elActive) {
 
     if (isMoveToEditor) {
         memeEditor.classList.add('flex-row');
-        memeEditor.classList.add('space-between');
+        memeEditor.classList.add('space-between'); 
         memeEditor.classList.remove('hidden');
         gallery.classList.add('hidden');
         about.classList.remove('flex-row');
@@ -67,7 +67,7 @@ function renderMyMemes() {
     var htmlImgs = myMemes.map(item => {
         return `<div class=" meme-img flex-row"> 
             <img class="meme-img" src="${item.meme}">
-            <div class="meme-btn-container absolute flex-col justify-center">
+            <div class="meme-btn-container absolute flex-col space-between">
                 <form action="" method="POST" enctype="multipart/form-data" onsubmit="onShareImgFacebook('${item.meme}',this,event)">
                     <button type="submit" class="meme-btn"><i class="meme-opt-icon fas fa-share-alt"></i></button>
                     <input name="img" id="imgDataIcon" type="hidden" />

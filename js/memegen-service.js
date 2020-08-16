@@ -1,12 +1,11 @@
 'use strict';
 
-const DEF_LINE_SIZE = 60;
-const DEF_LINE_ALIGN = 'center';
-const DEF_LINE_COLOR = 'white';
-const DEF_LINE_FRAME_COLOR = 'black';
-const DEF_TXT = 'Insert Text Here';
-const DEF_FONT = 'impact';
-const CANVSA_WIDTH = 500;
+// const DEF_LINE_SIZE = 60;
+// const DEF_LINE_ALIGN = 'center';
+// const DEF_LINE_COLOR = 'white';
+// const DEF_LINE_FRAME_COLOR = 'black';
+// const DEF_TXT = 'Insert Text Here';
+// const DEF_FONT = 'impact';
 
 var gMeme;
 
@@ -39,8 +38,7 @@ function setSelectrdImg(imgId) {
 
 //Add line to the meme
 function addLine(y) {
-    var line =
-    {
+    gMeme.lines.push({
         id: gMeme.lines.length,
         pos: { x: CANVSA_WIDTH / 2, y: y },
         txt: DEF_TXT,
@@ -49,36 +47,16 @@ function addLine(y) {
         color: DEF_LINE_COLOR,
         frameColor: DEF_LINE_FRAME_COLOR,
         font: DEF_FONT
-    }
-    gMeme.lines.push(line);
+    });
 }
 
 //Update all parameters in sellected meme line
 function updateLine(data, type) {
     let updateLine = gMeme.lines[gMeme.selectedLineIdx];
-    switch (type) {
-        case TXT_TYPE:
-            updateLine.txt = data;
-            break;
-        case SIZE_TYPE:
-            updateLine.size += data;
-            break;
-        case ALIGN_TYPE:
-            updateLine.align = data;
-            break;
-        case COLOR_TYPE:
-            updateLine.color = data;
-            break;
-        case COLOR_FRAME_TYPE:
-            updateLine.frameColor = data;
-            break;
-        case FONT_TYPE:
-            updateLine.font = data;
-            break;
-        case POS_TYPE:
-            updateLine.pos.y = updateLine.pos.y + updateLine.size * data;
-            break;
-    }
+    if (type === POS_TYPE_Y) updateLine.pos.y = updateLine.pos.y + POS_CHANGE * data;
+    else if (type === POS_TYPE_X) updateLine.pos.x = data;
+    else if (type === SIZE_TYPE) updateLine[type] += data;
+    else updateLine[type] = data;
 }
 
 //Fix update in case position y is out of canvas
@@ -88,20 +66,12 @@ function directUpdateLinePosY(newPosY, fontHeight) {
     else updateLine.pos.y = newPosY;
 }
 
-//Fix update in case position x is out of canvas
-function directUpdateLinePosX(newPosX, txtWidth) {
-    let updateLine = gMeme.lines[gMeme.selectedLineIdx];
-    if (newPosX === 0) updateLine.pos.x = newPosX + txtWidth;
-    else if (newPosX === CANVSA_WIDTH) updateLine.pos.x = newPosX - txtWidth;
-    else updateLine.pos.x = CANVSA_WIDTH / 2;
-}
-
 //Remove selected line from meme
 function removeSelectedLine() {
     let deletedIdx = gMeme.selectedLineIdx;
     gMeme.lines.splice(gMeme.selectedLineIdx, 1);
     var startId = 0;
-    gMeme.lines.forEach((line,idx)=>{
+    gMeme.lines.forEach((line, idx) => {
         gMeme.lines[idx].id = startId;
         startId++;
     });
@@ -112,6 +82,7 @@ function removeSelectedLine() {
 //Get meme selected image
 function getSelectedImg() {
     return gImgs.find(img => { return img.id === gMeme.selectedImgId });
+    // return gImgs.find(img => img.id === gMeme.selectedImgId );
 }
 
 //Get line by its id
@@ -135,6 +106,12 @@ function setSelectNextLine() {
 //Set the selected line
 function setSelectedLinebyIdx(idx = 0) {
     gMeme.selectedLineIdx = idx;
+    gMeme.isSelectedLine = true;
+}
+
+function setUnSelectLines() {
+    gMeme.isSelectedLine = false;
+    gMeme.selectedLineIdx = gMeme.lines.length+1;
 }
 
 //Get currently selected line

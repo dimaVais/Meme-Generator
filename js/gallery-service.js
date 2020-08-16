@@ -1,7 +1,7 @@
 'use strict';
 
-const PAGE_SIZE = 9;
-const MY_MEMES_KEY = 'MY_MEMES';
+// const PAGE_SIZE = 9;
+// const MY_MEMES_KEY = 'MY_MEMES';
 
 var gStartIdx = 0;
 var gMyMemes;
@@ -28,7 +28,7 @@ var gImgs = [
     { id: 15, url: 'img/15.jpg', keywords: ['happy'] },
     { id: 16, url: 'img/16.jpg', keywords: ['happy'] },
     { id: 17, url: 'img/17.jpg', keywords: ['happy'] },
-    { id: 18, url: 'img/18.jpg', keywords: ['happy'] }
+    { id: 18, url: 'img/18.jpg', keywords: ['happy'] } //loop
 ];
 
 
