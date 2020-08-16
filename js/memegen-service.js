@@ -1,12 +1,5 @@
 'use strict';
 
-// const DEF_LINE_SIZE = 60;
-// const DEF_LINE_ALIGN = 'center';
-// const DEF_LINE_COLOR = 'white';
-// const DEF_LINE_FRAME_COLOR = 'black';
-// const DEF_TXT = 'Insert Text Here';
-// const DEF_FONT = 'impact';
-
 var gMeme;
 
 //Reset meme object to default values

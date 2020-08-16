@@ -1,8 +1,5 @@
 'use strict';
 
-// const PAGE_SIZE = 9;
-// const MY_MEMES_KEY = 'MY_MEMES';
-
 var gStartIdx = 0;
 var gMyMemes;
 var gGalleryMode;

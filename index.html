@@ -17,7 +17,8 @@
         <nav class="nav-bar flex-row space-between">
             <button class="nav-item gallery-btn" id="gallery-btn"
                 onclick="onChangePageLayout(false,this)">Gallery</button>
-            <button class="nav-item memes-btn" id="memes-btn" onclick="onChangePageLayout(false,this)">Memes</button>
+            <button class="nav-item memes-btn" id="memes-btn"
+                onclick="onChangePageLayout(false,this)">Memes</button>
             <button class="nav-item about-btn" onclick="sctollToAbout()">About</button>
         </nav>
         <div class="hamburger hidden" onclick="openMenu()">
@@ -28,8 +29,8 @@
     <main>
         <section class="gallery">
             <div class="pager-cntainer flex-row space-between">
-                <button class=" pager prev-page" onclick=onSetCurrPage(-1)>Prev-Page</button>
-                <button class=" pager next-page" onclick=onSetCurrPage(1)>Next-Page</button>
+                <button class=" pager prev-page hover-btn" onclick=onSetCurrPage(-1)>Prev-Page</button>
+                <button class=" pager next-page hover-btn" onclick=onSetCurrPage(1)>Next-Page</button>
             </div>
             <div class="gallery-container"></div>
 
@@ -84,15 +85,15 @@
                     <i id="txt-color" class="fas fa-palette" onclick="toggleColorPicker(this.id)"></i>
                 </div>
                 <div class="act-btn-container flex-row space-between">
-                    <button class="act-btn save" onclick="onSaveMeme()">SAVE</button>
+                    <button class="act-btn save hover-btn" onclick="onSaveMeme()">SAVE</button>
 
                     <form action="" method="POST" enctype="multipart/form-data"
                         onsubmit="onShareImgFacebook('CANVAS',this,event)">
-                        <button type="submit" class="act-btn share">SHARE</button>
+                        <button type="submit" class="act-btn share hover-btn">SHARE</button>
                         <input name="img" id="imgData" type="hidden" />
                     </form>
 
-                    <button class="act-btn download">
+                    <button class="act-btn download hover-btn">
                         <a onclick="onDownloadMeme(this)" download="">DOWNLOAD</a>
                     </button>
                 </div>
@@ -113,11 +114,11 @@
                 </h2>
 
                 <div class="my-icons-container flex-row space-between">
-                    <div class="personal-icon-container">
+                    <div class="personal-icon-container hover-btn">
                         </i><a href="https://www.linkedin.com/in/dima-vaisberg-638b521b0/"> <i
                                 class="fab fa-linkedin-in personal-icon"></i></a>
                     </div>
-                    <div class="personal-icon-container">
+                    <div class="personal-icon-container hover-btn">
                         <a href="https://github.com/dimaVais/"> <i class="fab fa-github personal-icon"></i></a>
                     </div>
                 </div>

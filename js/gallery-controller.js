@@ -1,9 +1,5 @@
 'use strict';
 
-// const GALLERY_MODE = 'GALERY';
-// const MEMES_MODE = 'MEMES';
-
-
 // Change the different sections on the page app
 function onChangePageLayout(isMoveToEditor, elActive) {
     const memeEditor = document.querySelector('.meme-container');
@@ -69,15 +65,15 @@ function renderMyMemes() {
             <img class="meme-img" src="${item.meme}">
             <div class="meme-btn-container absolute flex-col space-between">
                 <form action="" method="POST" enctype="multipart/form-data" onsubmit="onShareImgFacebook('${item.meme}',this,event)">
-                    <button type="submit" class="meme-btn"><i class="meme-opt-icon fas fa-share-alt"></i></button>
+                    <button type="submit" class="meme-btn hover-btn"><i class="meme-opt-icon fas fa-share-alt"></i></button>
                     <input name="img" id="imgDataIcon" type="hidden" />
                 </form>
-                <button class="meme-btn">
+                <button class="meme-btn hover-btn">
                 <a href=${item.meme} download="Gallery Meme ${item.id}.jpg">
                     <i class="meme-opt-icon fas fa-download"></i>
                 </a>
                 </button>
-                <button class="meme-btn" onclick="onRemoveMeme('${item.id}')">
+                <button class="meme-btn hover-btn" onclick="onRemoveMeme('${item.id}')">
                     <i class="meme-opt-icon fas fa-trash"></i>  
                 </button>
             </div>

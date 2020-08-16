@@ -208,11 +208,17 @@ function onSelectLine() {
     drawCanvas();
 }
 
-//Set the text of selected line
+//Set the text of selected line in te input tetx
 function setInputLineText() {
     const currLine = getSelectedLine();
-    document.querySelector('.line').value = currLine.txt;
+    let inputLine = document.querySelector('.line');
+    inputLine.value = currLine.txt;
+    if (inputLine.value === DEF_TXT) {
+        inputLine.select();
+    }
 }
+
+
 
 // ----- Selected line Line Update functions ------//
 
@@ -342,6 +348,7 @@ function getTextWidth(text) {
     return gCtx.measureText(text).width;
 }
 
+//Get line from meme text hight
 function getLineFontHight(line) {
     let fontOfLine = line.size + 'pt' + ' ' + line.font;
     return parseInt(fontOfLine);
