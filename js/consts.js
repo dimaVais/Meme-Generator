@@ -23,6 +23,6 @@ const DEF_FONT = 'impact';
 //GALERY CONSTS
 const GALLERY_MODE = 'GALERY';
 const MEMES_MODE = 'MEMES';
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 12;
 const MY_MEMES_KEY = 'MY_MEMES';
 

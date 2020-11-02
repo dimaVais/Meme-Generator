@@ -52,6 +52,8 @@ i {
     padding-left: 51px;
     padding-right: 136px;
     height: 600px;
+    max-width:1200px;
+    margin: auto;
 }
 
 .canvas-container {
@@ -161,7 +163,7 @@ i {
     background-color: var(--white-two);
     margin: 0 auto;
     margin-bottom: 50px;
-    width: 100%;
+    max-width: 1600px;
     margin-top: 20px;
 }
 
@@ -211,6 +213,7 @@ i {
     text-align: center;
     color: #ffffff;
     cursor: pointer;
+    outline-style: none;
 }
 
 .meme-btn-container {
