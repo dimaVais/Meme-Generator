@@ -1,5 +1,5 @@
 # Meme-Generator
 
-Meme Generator app Written with Vanilla java script.
-It allows user to chose an image from a stock of images, add text and change it style, color or location as wanted.
-Memes can be doenloaded, shared or saved in a meme gallery.
+Meme Generator app written with vanilla javascript, using html canvas.
+It allows user to choose an image from a stock of images, add text and change it's style, color or location on the image.
+Memes can be downloaded, shared or saved in a meme gallery.
